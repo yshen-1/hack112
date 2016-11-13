@@ -12,15 +12,19 @@ class game(object):
         self.height=500
         self.sceneCenter=(0,0,0)
         self.background=(0,0,0)
-        self.gameScene=display(title="3D missile command",width=self.width,
-                               height=self.height,center=self.sceneCenter,
+        self.gameScene=display(title="3D missile command",
+                               width=self.width,
+                               height=self.height,
+                               center=self.sceneCenter,
                                background=self.background)
+
         self.gameScene.select()
         self.target = Target(0,0,0,1)
+        
         self.gameScene.userzoom = False
         self.gameScene.userspin = False
-
-        self.camTheta = 0
+        self.gameScene.range = ((5,5,5))
+        self.camTheta = math.pi
         self.camRadius = 10
         self.missileList = []
         self.explosionList=[]
