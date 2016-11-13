@@ -3,19 +3,23 @@ from visual import *
 from Target import Target
 import math
 
-def generateMissile(missileSpawnLength):
+
+def generateMissile(velocity = 3,blastYield = 2,blastRadius=0):
     missileSpawnLength = 20
-    #make random cylindrical coordinate.
+    #make random unit vector in cylindrical coordinate.
     r = 1
     z = random.uniform(-1.0, 1.0)
     theta = random.uniform(0.0, 2*math.pi)
     #convert to cartesian
-    x = r*math.cos(theta)
-    y = r*math.sin(theta)
+    x = math.sqrt(1-z**2)*math.cos(theta)
+    y = math.sqrt(1-z**2)*math.sin(theta)
     z = z
-
-    missileStartPos = vector(x,y,z)
-    return (x,y,z)
+    #Add magnitude to the unit vector:
+    x *= missileSpawnLength
+    y *= missileSpawnLength
+    z *= missileSpawnLength
+    missileSpawnLocation = vector(x,y,z)
+    return missile(missileSpawnLocation,velocity,blastYield,blastRadius=0)
 
 class Target(object):
     def __init__(self, x, y, z, radius):
@@ -29,8 +33,9 @@ class Target(object):
         return distance < collisionRadius
 
     def draw(self):
-        sphere(pos=tuple(self.position), radius=self.radius,
+        return sphere(pos=tuple(self.position), radius=self.radius,
                material=materials.earth)
+
 
 class missileObject(object):
     def __init__(self,launchLocation,velocity,blastYield,blastRadius=0):
@@ -54,12 +59,7 @@ class missileObject(object):
         pass
     def timerFired(self,deltaT):
         self.location=self.location+self.velocity*deltaT
-        '''
-        if self.checkCollision():
-            self.explode()
-            return True
-        '''
-        return False
+
 class game(object):
     def __init__(self):
         self.deltaT=0.05
@@ -72,9 +72,13 @@ class game(object):
                                background=self.background)
         self.gameScene.select()
         self.target = Target(0,0,0,2)
-        self.target.draw()
+        self.targetSphere=self.target.draw()
         self.missileList = []
         self.gameOver=False
+    def timerFired(self):
+        for i in range(len(self.missileList:
+            if missile.timerFired():
+
     def run(self):
         while not self.gameOver:
             key=self.gameScene.kb.getkey()
@@ -82,7 +86,7 @@ class game(object):
                 print("Game over")
                 self.gameOver=True
             self.timerFired()
-            self.drawAll()
+            #self.drawAll()
         exit()
 missileCommand=game()
 missileCommand.run()
