@@ -14,11 +14,13 @@ class Radar(object):
                                background=self.background,x=800,y=450)
 
         self.radarScene.select()
+        # adds lights to scene
         self.radarScene.lights = (distant_light(direction = ( 0, 1,  0), color = color.gray(.4)),
                                   distant_light(direction = ( 0, 1, -1), color = color.gray(.2)),
                                   distant_light(direction = ( 0, 1,  1), color = color.gray(.2)),
                                   distant_light(direction = (-1, 1,  0), color = color.gray(.2)),
                                   distant_light(direction = ( 1, 1,  0), color = color.gray(.2)),)
+        # sets default perspective
         self.radarScene.forward = vector(0, -1, -3)
         self.radarScene.userZoom = False
         self.radarScene.userSpin = False
