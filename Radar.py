@@ -1,5 +1,6 @@
 from __future__ import print_function,division
 from visual import *
+import math
 
 class radarMis(object):
     def __init__(self,radar, mislaunchLocation,misVelocity,target=None):
@@ -9,24 +10,36 @@ class radarMis(object):
         self.radius=1
         worldToRadar = 15/6
         self.launchLocation = (-1 * mislaunchLocation[0] * worldToRadar,
-                               0,
+                               math.fabs(mislaunchLocation[1] * worldToRadar),
                                -1 * mislaunchLocation[2] * worldToRadar)
-            
-        self.velocity = (-1 * misVelocity[0]*(worldToRadar),
-                        0,
+        self.ySign = mislaunchLocation[1]/math.fabs(mislaunchLocation[1])
+        self.location2D = (self.launchLocation[0], 0, self.launchLocation[2])
+        self.velocity =(-1 * misVelocity[0]*(worldToRadar),
+                        misVelocity[1]*(worldToRadar),
                         -1 * misVelocity[2]*(worldToRadar))
         self.color = color.red
         self.despawn = 20
         self.radarMisBody=sphere(pos=tuple(self.launchLocation),
                                 radius=self.radius,color=self.color)
+        if self.ySign < 0: c = (1,1,1)
+        else: c = color.black 
+        self.line = cylinder(pos=tuple(self.location2D), 
+                             axis = (0, self.launchLocation[1], 0), radius = .1,
+                             color = c)
 
     def timerFired(self, deltaT):
         self.radarMisBody.pos.x += self.velocity[0]*deltaT
+        self.radarMisBody.pos.y += -1 * math.fabs(self.velocity[1]*deltaT)
         self.radarMisBody.pos.z += self.velocity[2]*deltaT
+        self.location2D = (self.radarMisBody.pos.x, 0, self.radarMisBody.pos.z)
+        self.line.pos = self.location2D
+        self.line.axis = (0, self.radarMisBody.pos.y, 0)
         if (mag(vector(self.radarMisBody.pos))<15/6):
             self.destroyed=True
             self.radarMisBody.visible=False
+            self.line.visible = False
             del self.radarMisBody
+            del self.line
             return False
         return True
 
