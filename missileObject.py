@@ -13,7 +13,7 @@ class explosion(object):
                               radius=self.blastRadius+0.0005,color=self.color)
     def timerFired(self):
         self.explosion.radius+=0.01
-        if (self.explosion.radius>self.blastYield):
+        if (self.explosion.radius>self.blastYield): #end explosion
             self.over=True
             self.explosion.visible=False
             del self.explosion
