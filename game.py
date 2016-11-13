@@ -83,6 +83,13 @@ class game(object):
                             if not self.explosionList[i].over]
     def run(self):
         while not self.gameOver:
+            if self.gameScene.mouse.events!=0:
+                event=self.gameScene.mouse.getevent()
+                #print(help(event))
+                if event=='mousedown':
+                    print("Mouse down!")
+                    position=self.gameScene.mouse.pos
+                    print(position)
             if self.gameScene.kb.keys!=0:
                 key=self.gameScene.kb.getkey()
                 if key=='esc':
