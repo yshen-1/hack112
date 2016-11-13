@@ -1,21 +1,18 @@
 from __future__ import print_function,division
 from visual import *
 from Target import Target
-import math,random
-
-
-
-
+import math
+import random
 
 class missileObject(object):
     def __init__(self,launchLocation,velocity,blastYield,blastRadius=0):
-        self.destroyed=False
         self.radius=0.1
         self.color=color.red
         self.blastRadius=blastRadius
         self.blastYield=blastYield
         self.velocity=velocity
         self.launchLocation=launchLocation
+        self.location=launchLocation
         self.missileBody=sphere(pos=tuple(launchLocation),
                                 radius=self.radius,color=self.color)
     def spawnMissiles(self):
@@ -25,14 +22,14 @@ class missileObject(object):
         explosion=sphere(pos=self.missileBody.pos,
                          radius=self.blastRadius,color=color.green)
         del self.missileBody
+
         while self.blastRadius<self.blastYield:
             self.blastRadius+=0.01
             explosion.radius=self.blastRadius
         del explosion
     def timerFired(self,deltaT):
-        self.missileBody.pos+=(self.velocity*deltaT)
-        if mag(vector(self.missileBody.pos))<0.1:
-            self.explode()
+        self.location=self.location+self.velocity*deltaT
+
 class game(object):
     def __init__(self):
         self.deltaT=0.05
@@ -94,6 +91,7 @@ class game(object):
         self.missileList=[self.missileList[i] for i in
                           range(len(self.missileList))
                           if not self.missileList[i].destroyed]
+
 
     def run(self):
         while not self.gameOver:
