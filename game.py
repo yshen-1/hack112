@@ -3,6 +3,7 @@ from visual import *
 from Target import Target
 from Radar import Radar
 from Radar import radarMis
+from splashScreen import splashScreen
 from missileObject import missileObject
 import math,random,time
 
@@ -44,7 +45,6 @@ class game(object):
         #creating radar
         self.radar = Radar()
         self.gameScene.select()
-        self.ui=ui(self.target.radius)
 
 
     def generateMissile(self, target):
@@ -143,7 +143,6 @@ class game(object):
 
         self.gameScene.select()
         mousePos=self.gameScene.mouse.pos
-        self.ui.timerFired(mousePos.x)
 
         #missle operations
         self.gameScene.select()
@@ -190,11 +189,11 @@ class game(object):
                 if key=='esc':
                     print("Game over")
                     self.gameOver=True
-                elif key == "right":
+                elif key == "right" or key == "a":
                     self.camTheta -= .2
                     self.radar.updateCam(-.2)
                     self.gameScene.select()
-                elif key == "left":
+                elif key == "left" or key == "d":
                     self.camTheta += .2
                     self.radar.updateCam(.2)
                     self.gameScene.select()
@@ -210,5 +209,7 @@ class game(object):
 
             rate(100)
         exit()
+
+
 missileCommand=game()
 missileCommand.run()
