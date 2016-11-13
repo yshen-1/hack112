@@ -26,6 +26,7 @@ class explosion(object):
 class missileObject(object):
     def __init__(self,launchLocation,velocity,blastYield,target=None,
                  blastRadius=0,counter=False):
+        self.counter=counter
         self.destroyed=False
         self.radius=0.05
         self.targetThreshold=0.05
