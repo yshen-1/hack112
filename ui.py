@@ -8,7 +8,7 @@ class targetRing(object):
         self.ring=shapes.arc(radius=initRadius,angle1=0,angle2=2*pi)
         self.ext=extrusion(shape=self.ring,up=(0,0,1))
     def timerFired(self,newRadius):
-        print(newRadius)
+        #print(newRadius)
         self.ring.radius=newRadius
         self.ext.shape=self.ring
 

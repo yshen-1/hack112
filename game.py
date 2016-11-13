@@ -92,7 +92,8 @@ class game(object):
             result = None
             for explosion in self.explosionList:
                 distVector = missile.missileBody.pos - explosion.location
-                if(distVector.mag <= missile.missileBody.radius+explosion.blastRadius):
+                if(distVector.mag <= missile.missileBody.radius+explosion.explosion.radius):
+                    #print("Missiles Collided!")
                     result=missile.timerFired(self.deltaT,self.target.radius,collide = True)
                     break
             if(result != None):
@@ -123,7 +124,7 @@ class game(object):
         #Get Missile Velocity
         counterMissileVelocity = norm(mouseInput - closestLaunchSite) #Subtract the vectors
         counterMissileVelocity.mag = missileSpeed
-        blastYield=0.3
+        blastYield=5
         return missileObject(closestLaunchSite, counterMissileVelocity,
                              blastYield,blastRadius=0,target=mouseInput,
                              counter=True)
