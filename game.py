@@ -4,7 +4,6 @@ from Target import Target
 from Radar import Radar
 from Radar import radarMis
 from missileObject import missileObject
-from ui import  ui
 import math,random,time
 
 
@@ -19,8 +18,6 @@ class game(object):
         self.gameScene=display(title="3D missile command",width=self.width,
                                height=self.height,center=self.sceneCenter,
                                background=self.background)
-        self.gameScene.select()
-
         #creating earth
         self.target = Target(0,0,0,1)
         #camera operations
@@ -122,13 +119,14 @@ class game(object):
         time2=time.time()
         print("Launch site find time:",time2-time1)
         #Get Missile Velocity
-        counterMissileVelocity = norm(mouseInput - closestLaunchSite) #Subtract the vectors
+        counterMissileVelocity = norm(mouseInput - closestLaunchSite)#subtract the vectors
         counterMissileVelocity.mag = missileSpeed
         blastYield=5
         return missileObject(closestLaunchSite, counterMissileVelocity,
                              blastYield,blastRadius=0,target=mouseInput,
                              counter=True)
     def timerFired(self):
+
         self.missileList=[self.missileList[i] for i in
                           range(len(self.missileList))
                           if not self.missileList[i].destroyed]
