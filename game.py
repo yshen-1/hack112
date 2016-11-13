@@ -69,10 +69,8 @@ class game(object):
                              blastYield,blastRadius=0)
 
     def timerFired(self):
-        print("Timer fired!")
-        if random.randint(0,100)<3:
+        if random.randint(0,100)<1:
             self.missileList.append(self.generateMissile())
-            print("Missile spawned!")
         for missile in self.missileList:
             result=missile.timerFired(self.deltaT,self.target.radius)
             if result!=None:

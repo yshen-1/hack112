@@ -34,7 +34,6 @@ class missileObject(object):
     def timerFired(self,deltaT,targetRadius):
         self.missileBody.pos+=self.velocity*deltaT
         if mag(vector(self.missileBody.pos))<targetRadius:
-            print("Explosion!")
             self.destroyed=True
             missileLocation=self.missileBody.pos
             blastRadius=0
@@ -43,6 +42,5 @@ class missileObject(object):
             self.missileBody.trail_object.visible=False
             del self.missileBody.trail_object
             del self.missileBody
-            del self.missileBody.trail_object
             return explosion(missileLocation,blastRadius,blastYield)
 
