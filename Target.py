@@ -49,11 +49,6 @@ class Target(object):
         #draws target or earth
         sphere(pos=tuple(self.position), radius=self.radius,
                material=materials.earth)
-        # green = (.114, .914, .714)
-        # blue = (0, .69, 100)
-        # yellow = (1, 1, 0)
-        # orange = (1, .439, .263)
-        # colors = [orange, blue, yellow, green]
         #puts the launch points silos
         for p in range(len(self.launchPoints)):
             point = self.launchPoints[p]
