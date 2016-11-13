@@ -3,7 +3,7 @@ from visual import *
 from Target import Target
 from Radar import Radar
 from missileObject import missileObject
-import math,random
+import math,random,time
 
 
 class game(object):
@@ -26,6 +26,7 @@ class game(object):
         self.target = Target(0,0,0,1)
 
         #camera operations
+
         self.gameScene.userzoom = False
         self.gameScene.userspin = False
         self.gameScene.range = ((5,5,5))
@@ -81,6 +82,33 @@ class game(object):
         blastYield=0.3
         return missileObject(missileSpawnLocation, missileVelocity,
                              blastYield,blastRadius=0)
+    @staticmethod
+    def dist(x1,y1,z1,x2,y2,z2):
+        return math.sqrt((x1-x2)**2+(y1-y2)**2+(z1-z2)**2)
+    def generateCounterMissile(self,mouseInput, target):
+        missileSpeed = 1
+        #Get location of the launch sites
+        time0=time.time()
+        launchSiteList = target.findTargetLaunchPoints()
+        time1=time.time()
+        print("Target find time:",time1-time0)
+        #See which launch site is closest to mouse input
+        shortestDist = None
+        closestLaunchSite = None
+        for launchSite in launchSiteList:
+            dist = game.dist(mouseInput.x,mouseInput.y,mouseInput.z,launchSite.x,launchSite.y,launchSite.z)
+            if(shortestDist == None or dist < shortestDist):
+                shortestDist = dist
+                closestLaunchSite = launchSite
+        time2=time.time()
+        print("Launch site find time:",time2-time1)
+        #Get Missile Velocity
+        counterMissileVelocity = norm(mouseInput - launchSite) #Subtract the vectors
+        counterMissileVelocity.mag = missileSpeed
+        blastYield=0.3
+        return missileObject(closestLaunchSite, counterMissileVelocity,
+                             blastYield,blastRadius=0,target=mouseInput,
+                             counter=True)
 
     def timerFired(self):
         if random.randint(0,100)<1:
@@ -102,10 +130,12 @@ class game(object):
     def run(self):
         while not self.gameOver:
             if self.gameScene.mouse.events!=0:
-                event=self.gameScene.mouse.getclick()
-                location=event.pos
-                #@TODO make generate counter missile function
-                #self.missileList.append(self.generateMissile(location))
+                print("Click!")
+                event=self.gameScene.mouse.getevent()
+                if (event.release!=None):
+                    location=event.pos
+                    self.missileList.append(self.generateCounterMissile
+                                            (location,self.target))
 
             if self.gameScene.kb.keys!=0:
                 key=self.gameScene.kb.getkey()

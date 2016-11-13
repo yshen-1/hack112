@@ -21,8 +21,9 @@ class explosion(object):
 class missileObject(object):
     def __init__(self,launchLocation,velocity,blastYield,blastRadius=0):
         self.destroyed=False
-        self.radius=0.1
-        self.color=color.red
+        self.radius=0.05
+        self.targetThreshold=0.05
+        self.color=color.white if not counter else color.green
         self.blastRadius=blastRadius
         self.blastYield=blastYield
         self.velocity=velocity
