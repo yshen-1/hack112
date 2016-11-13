@@ -47,6 +47,7 @@ class game(object):
         #Generate a random spawn location and velocity
         missileSpawnLength = 20
         missileSpeed = 3
+        missileError = 0.05
         # make random unit vector in cylindrical coordinate.
         r = 1
         z = random.uniform(-1.0, 1.0)
@@ -59,6 +60,10 @@ class game(object):
         xVel = -xPos
         yVel = -yPos
         zVel = -zPos
+        #Add some random error to the missileVelocity
+        xVel += random.uniform(-missileError,missileError)
+        yVel += random.uniform(-missileError,missileError)
+        zVel += random.uniform(-missileError,missileError)
         #Add magnitude to the velocity unit vector
         xVel *= missileSpeed
         yVel *= missileSpeed
