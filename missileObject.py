@@ -5,14 +5,18 @@ import math,random
 class explosion(object):
     def __init__(self,location,blastRadius,blastYield):
         self.over=False
-        self.color=color.yellow
         self.location=location
         self.blastRadius=blastRadius
         self.blastYield=blastYield
         self.explosion=sphere(pos=self.location,
-                              radius=self.blastRadius+0.001,color=self.color)
+                              radius=self.blastRadius+0.0005,color=(1, 1, 0))
     def timerFired(self):
         self.explosion.radius+=0.01
+        self.explosion.opacity -= .025
+        (r, g, b) = self.explosion.color
+        g -= 0.01
+        self.explosion.color = (r, g, b)
+        print(self.explosion.color)
         if (self.explosion.radius>self.blastYield): #end explosion
             self.over=True
             self.explosion.visible=False
@@ -41,10 +45,8 @@ class missileObject(object):
     def spawnMissiles(self):
         pass
     def timerFired(self,deltaT,targetRadius, collide = False):
-        self.missileBody.pos+=self.velocity*deltaT
         if ((mag(vector(self.missileBody.pos))<targetRadius) or
             (mag(vector(self.missileBody.pos))>self.despawnLength) or
-            (collide == True) or
             (self.target!=None and
             (missileObject.distance(self.missileBody.pos,vector(self.target))
                                     <self.targetThreshold))):
@@ -57,3 +59,13 @@ class missileObject(object):
             del self.missileBody.trail_object
             del self.missileBody
             return explosion(missileLocation,blastRadius,blastYield)
+        self.missileBody.pos+=self.velocity*deltaT
+    def destroy(self):
+            self.destroyed=True
+            missileLocation=self.missileBody.pos
+            blastRadius=0
+            blastYield=self.blastYield
+            self.missileBody.visible=False
+            self.missileBody.trail_object.visible=False
+            del self.missileBody.trail_object
+            del self.missileBody
