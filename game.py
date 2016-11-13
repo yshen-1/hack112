@@ -18,6 +18,7 @@ class missileObject(object):
     def checkCollision(self):
         pass
     def timerFired(self):
+        pass
 class game(object):
     def __init__(self):
         self.deltaT=0.05
