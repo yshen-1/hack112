@@ -6,7 +6,10 @@ wallR = box(pos=(6,0,0), size=(0.2,12,12), color=color.green)
 ball.velocity=vector(25,0,0)
 deltat=0.005
 t=0
-while t<3:
+while t<50:
+    key = scene.kb.getkey()
+    if key == 'up':
+        print("Game over")
     ball.pos=ball.pos+ball.velocity*deltat
     if ball.pos.x>wallR.pos.x or ball.pos.x<-10:
         ball.velocity*=-1
