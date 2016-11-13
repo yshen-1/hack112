@@ -7,6 +7,7 @@ class Target(object):
         self.position = vector(x, y, z)
         self.radius = radius
         self.launchPoints = self.findTargetLaunchPoints()
+        self.draw()
 
     def findTargetLaunchPoints(self):
         points = []
