@@ -25,7 +25,8 @@ class Target(object):
         return distance < collisionRadius
 
     def draw(self):
-        sphere(pos=tuple(self.position), radius=self.radius, 
+        #draws target
+        sphere(pos=tuple(self.position), radius=self.radius,
                material=materials.earth)
         colors = [color.red, color.blue, color.green, color.yellow]
         for p in range(len(self.launchPoints)):
