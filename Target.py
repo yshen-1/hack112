@@ -33,15 +33,10 @@ class Target(object):
         #draws target or earth
         sphere(pos=tuple(self.position), radius=self.radius,
                material=materials.earth)
-        green = (.114, .914, .714)
-        blue = (0, .69, 100)
-        yellow = (1, 1, 0)
-        orange = (1, .439, .263)
-        colors = [orange, blue, yellow, green]
+        colors = [color.orange, color.blue, color.yellow, color.green]
         #puts the launch points silos
         for p in range(len(self.launchPoints)):
             point = self.launchPoints[p]
             c = colors[p//2]
             print(c, point)
-            cone(pos = tuple(point), radius = self.radius/10, 
-                 axis = tuple(point/10), color = c)
+            sphere(pos = tuple(point), radius = self.radius/10, color = c)
