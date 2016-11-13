@@ -28,7 +28,6 @@ class game(object):
                                background=self.background)
         self.gameScene.select()
         self.target = Target(0,0,0,1)
-        self.targetSphere=self.target.draw()
         self.missileList = []
         self.gameOver=False
 
