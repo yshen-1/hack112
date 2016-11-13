@@ -48,8 +48,6 @@ class game(object):
         self.gameScene.select()
         self.ui=ui(self.target.radius)
 
-
-
     def generateMissile(self, target):
         blastRadius = 0
         #To Do, make generate missiles send missiles to the launch points
@@ -82,9 +80,11 @@ class game(object):
         blastYield=0.3
         return missileObject(missileSpawnLocation, missileVelocity,
                              blastYield,blastRadius=0)
+
     @staticmethod
     def dist(x1,y1,z1,x2,y2,z2):
         return math.sqrt((x1-x2)**2+(y1-y2)**2+(z1-z2)**2)
+
     def generateCounterMissile(self,mouseInput, target):
         missileSpeed = 1
         #Get location of the launch sites
@@ -103,7 +103,7 @@ class game(object):
         time2=time.time()
         print("Launch site find time:",time2-time1)
         #Get Missile Velocity
-        counterMissileVelocity = norm(mouseInput - launchSite) #Subtract the vectors
+        counterMissileVelocity = norm(mouseInput - closestLaunchSite) #Subtract the vectors
         counterMissileVelocity.mag = missileSpeed
         blastYield=0.3
         return missileObject(closestLaunchSite, counterMissileVelocity,
@@ -130,11 +130,11 @@ class game(object):
         self.explosionList=[self.explosionList[i] for i in
                             range(len(self.explosionList))
                             if not self.explosionList[i].over]
-
         #camera ops
         camX = math.sin(self.camTheta) * self.camRadius
         camZ = math.cos(self.camTheta) * self.camRadius
-        self.gameScene.forward = vector(camX, 0, camZ)
+        self.gameScene.forward = vector(camX, self.camY, camZ)
+
 
     def run(self):
         self.gameScene.select()
