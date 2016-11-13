@@ -18,4 +18,3 @@ class ui(object):
     def timerFired(self,newRingRadius):
         self.ring.timerFired(newRingRadius)
 
-r=targetRing(2)
