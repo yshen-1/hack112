@@ -4,6 +4,7 @@ from Target import Target
 from Radar import Radar
 from Radar import radarMis
 from missileObject import missileObject
+from ui import  ui
 import math,random,time
 
 
@@ -22,7 +23,6 @@ class game(object):
 
         #creating earth
         self.target = Target(0,0,0,1)
-
         #camera operations
         self.gameScene.lights = (distant_light(direction = ( 1, 0,  0), color = color.gray(.4)),
                                  distant_light(direction = (-1, 0,  0), color = color.gray(.5)),
@@ -34,7 +34,7 @@ class game(object):
         self.gameScene.range = ((5,5,5))
 
         self.camTheta = math.pi
-
+        self.camY = 0
         self.camRadius = 10
 
         #game variables
@@ -46,16 +46,17 @@ class game(object):
 
         #creating radar
         self.radar = Radar()
-
         self.gameScene.select()
+        self.ui=ui(self.target.radius)
 
 
-    def generateMissile(self,blastRadius=0):
+    def generateMissile(self, target):
+        blastRadius = 0
+
         #To Do, make generate missiles send missiles to the launch points
         #Generate a random spawn location and velocity
         missileSpawnLength = 6
         missileSpeed = 0.5
-        missileError = 0.1
         # make random unit vector in cylindrical coordinate.
         r = 1
         z = random.uniform(-1.0, 1.0)
@@ -64,25 +65,21 @@ class game(object):
         xPos = math.sqrt(1 - z ** 2) * math.cos(theta)
         yPos = math.sqrt(1 - z ** 2) * math.sin(theta)
         zPos = z
-        #Generate the missileVelocity (invert the position vector)
-        xVel = -xPos / 2
-        yVel = -yPos / 2
-        zVel = -zPos / 2
-        #Add some random error to the missileVelocity
-        xVel += random.uniform(-missileError,missileError)
-        yVel += random.uniform(-missileError,missileError)
-        zVel += random.uniform(-missileError,missileError)
-        #Add magnitude to the velocity unit vector
-        xVel *= missileSpeed 
-        yVel *= missileSpeed 
-        zVel *= missileSpeed 
-        missileVelocity = vector(xVel, yVel, zVel)
 
         #Add magnitude to the position unit vector:
         xPos *= missileSpawnLength
         yPos *= missileSpawnLength
         zPos *= missileSpawnLength
         missileSpawnLocation = vector(xPos, yPos, zPos)
+
+        #Pick a random launch site to target
+        launchSiteList = target.findTargetLaunchPoints()
+        siteChosen = random.randint(0,len(launchSiteList)-1)
+        launchSite = launchSiteList[siteChosen]
+        missileVelocity = norm(launchSite - missileSpawnLocation) #Subtract the vectors
+        #Add magnitude to the velocity unit vector
+        missileVelocity.mag = missileSpeed
+
         blastYield=0.3
 
         radarMissile = radarMis(self.radar, missileSpawnLocation, missileVelocity)
@@ -90,9 +87,11 @@ class game(object):
         self.gameScene.select()
         return missileObject(missileSpawnLocation, missileVelocity,
                              blastYield,blastRadius=0)
+
     @staticmethod
     def dist(x1,y1,z1,x2,y2,z2):
         return math.sqrt((x1-x2)**2+(y1-y2)**2+(z1-z2)**2)
+
     def generateCounterMissile(self,mouseInput, target):
         self.gameScene.select()
         missileSpeed = 1
@@ -112,7 +111,7 @@ class game(object):
         time2=time.time()
         print("Launch site find time:",time2-time1)
         #Get Missile Velocity
-        counterMissileVelocity = norm(mouseInput - launchSite) #Subtract the vectors
+        counterMissileVelocity = norm(mouseInput - closestLaunchSite) #Subtract the vectors
         counterMissileVelocity.mag = missileSpeed
         blastYield=0.3
         return missileObject(closestLaunchSite, counterMissileVelocity,
@@ -120,16 +119,22 @@ class game(object):
                              counter=True)
 
     def timerFired(self):
+
         #radar missle operatoins
         self.radar.radarScene.select()
         for radarMis in self.radar.radarMisList:
             if not radarMis.timerFired(self.deltaT):
                 self.radar.radarMisList.remove(radarMis)
 
+
+        self.gameScene.select()
+        mousePos=self.gameScene.mouse.pos
+        self.ui.timerFired(mousePos.x)
+
         #missle operations
         self.gameScene.select()
         if random.randint(0,100)<1:
-            self.missileList.append(self.generateMissile())
+            self.missileList.append(self.generateMissile(self.target))
             if self.gameScene.autoscale:
                 self.gameScene.autoscale=False
         for missile in self.missileList:
@@ -144,11 +149,11 @@ class game(object):
         self.explosionList=[self.explosionList[i] for i in
                             range(len(self.explosionList))
                             if not self.explosionList[i].over]
-
         #camera ops
         camX = math.sin(self.camTheta) * self.camRadius
         camZ = math.cos(self.camTheta) * self.camRadius
-        self.gameScene.forward = vector(camX, 0, camZ)
+        self.gameScene.forward = vector(camX, self.camY, camZ)
+
 
         #updates radar missles
         self.radar.updateMis(self.target, self.missileList)
@@ -179,8 +184,13 @@ class game(object):
                     self.camTheta += .2
                     self.radar.updateCam(.2)
                     self.gameScene.select()
+                elif key == "up":
+                    if(self.camY > -2):
+                        self.camY -= 1
+                elif key == "down":
+                    if(self.camY < 2):
+                        self.camY += 1
 
-            
             #timer fired
             self.timerFired()
 
