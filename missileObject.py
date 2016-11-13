@@ -8,6 +8,7 @@ class explosion(object):
         self.location=location
         self.blastRadius=blastRadius
         self.blastYield=blastYield
+        print("Explosion BlastYield: ", blastYield)
         self.explosion=sphere(pos=self.location,
                               radius=self.blastRadius+0.0005,color=(1, 1, 0))
     def timerFired(self):
@@ -31,6 +32,7 @@ class missileObject(object):
         self.color=color.red if not counter else color.green
         self.blastRadius=blastRadius
         self.blastYield=blastYield
+        print("BlastYield: ", blastYield)
         self.velocity=velocity
         self.launchLocation=launchLocation
         self.target=target
@@ -59,12 +61,3 @@ class missileObject(object):
             del self.missileBody
             return explosion(missileLocation,blastRadius,blastYield)
         self.missileBody.pos+=self.velocity*deltaT
-    def destroy(self):
-            self.destroyed=True
-            missileLocation=self.missileBody.pos
-            blastRadius=0
-            blastYield=self.blastYield
-            self.missileBody.visible=False
-            self.missileBody.trail_object.visible=False
-            del self.missileBody.trail_object
-            del self.missileBody

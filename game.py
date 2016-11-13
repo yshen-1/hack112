@@ -3,6 +3,7 @@ from visual import *
 from Target import Target
 from Radar import Radar
 from Radar import radarMis
+from splashScreen import splashScreen
 from missileObject import missileObject
 import math,random,time
 
@@ -44,7 +45,7 @@ class game(object):
         #creating radar
         self.radar = Radar()
         self.gameScene.select()
-        #self.ui=ui(self.target.radius)
+
 
 
     def generateMissile(self, target):
@@ -89,7 +90,8 @@ class game(object):
             result = None
             for explosion in self.explosionList:
                 distVector = missile.missileBody.pos - explosion.location
-                if(distVector.mag <= missile.missileBody.radius+explosion.blastRadius):
+                if(distVector.mag <= missile.missileBody.radius+explosion.explosion.radius):
+                    #print("Missiles Collided!")
                     result=missile.timerFired(self.deltaT,self.target.radius,collide = True)
                     break
             if(result != None):
@@ -120,7 +122,7 @@ class game(object):
         #Get Missile Velocity
         counterMissileVelocity = norm(mouseInput - closestLaunchSite)#subtract the vectors
         counterMissileVelocity.mag = missileSpeed
-        blastYield=0.3
+        blastYield=5
         return missileObject(closestLaunchSite, counterMissileVelocity,
                              blastYield,blastRadius=0,target=mouseInput,
                              counter=True)
@@ -142,7 +144,7 @@ class game(object):
 
         self.gameScene.select()
         mousePos=self.gameScene.mouse.pos
-        #self.ui.timerFired(mousePos.x)
+
 
         #missle operations
         self.gameScene.select()
@@ -179,7 +181,7 @@ class game(object):
                 print("Click!")
                 event=self.gameScene.mouse.getevent()
                 if (event.release!=None):
-                    location=event.pos
+                    location=vector(event.pos.x,event.pos.y,0)
                     self.missileList.append(self.generateCounterMissile
                                             (location,self.target))
 
@@ -189,11 +191,11 @@ class game(object):
                 if key=='esc':
                     print("Game over")
                     self.gameOver=True
-                elif key == "right":
+                elif key == "right" or key == "a":
                     self.camTheta -= .2
                     self.radar.updateCam(-.2)
                     self.gameScene.select()
-                elif key == "left":
+                elif key == "left" or key == "d":
                     self.camTheta += .2
                     self.radar.updateCam(.2)
                     self.gameScene.select()
@@ -209,5 +211,7 @@ class game(object):
 
             rate(100)
         exit()
+
+
 missileCommand=game()
 missileCommand.run()
