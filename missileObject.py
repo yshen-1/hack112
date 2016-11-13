@@ -10,7 +10,7 @@ class explosion(object):
         self.blastRadius=blastRadius
         self.blastYield=blastYield
         self.explosion=sphere(pos=self.location,
-                              radius=self.blastRadius+0.0005,color=self.color)
+                              radius=self.blastRadius+0.001,color=self.color)
     def timerFired(self):
         self.explosion.radius+=0.01
         if (self.explosion.radius>self.blastYield): #end explosion
@@ -40,10 +40,11 @@ class missileObject(object):
         return mag(point1-point2)
     def spawnMissiles(self):
         pass
-    def timerFired(self,deltaT,targetRadius):
+    def timerFired(self,deltaT,targetRadius, collide = False):
         self.missileBody.pos+=self.velocity*deltaT
         if ((mag(vector(self.missileBody.pos))<targetRadius) or
             (mag(vector(self.missileBody.pos))>self.despawnLength) or
+            (collide == True) or
             (self.target!=None and
             (missileObject.distance(self.missileBody.pos,vector(self.target))
                                     <self.targetThreshold))):

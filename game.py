@@ -56,7 +56,7 @@ class game(object):
         #To Do, make generate missiles send missiles to the launch points
         #Generate a random spawn location and velocity
         missileSpawnLength = 6
-        missileSpeed = 0.4
+        missileSpeed = 0.1
         # make random unit vector in cylindrical coordinate.
         r = 1
         z = random.uniform(-1.0, 1.0)
@@ -139,7 +139,7 @@ class game(object):
 
         #missle operations
         self.gameScene.select()
-        if random.randint(0,100)<1:
+        if random.randint(0,1000)<2:
             self.missileList.append(self.generateMissile(self.target))
             if self.gameScene.autoscale:
                 self.gameScene.autoscale=False
