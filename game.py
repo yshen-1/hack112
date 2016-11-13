@@ -2,6 +2,7 @@ from __future__ import print_function,division
 from visual import *
 from Target import Target
 from Radar import Radar
+from Radar import radarMis
 from missileObject import missileObject
 from ui import  ui
 import math,random,time
@@ -48,8 +49,10 @@ class game(object):
         self.gameScene.select()
         self.ui=ui(self.target.radius)
 
+
     def generateMissile(self, target):
         blastRadius = 0
+
         #To Do, make generate missiles send missiles to the launch points
         #Generate a random spawn location and velocity
         missileSpawnLength = 6
@@ -78,6 +81,10 @@ class game(object):
         missileVelocity.mag = missileSpeed
 
         blastYield=0.3
+
+        radarMissile = radarMis(self.radar, missileSpawnLocation, missileVelocity)
+        self.radar.radarMisList.append(radarMissile)
+        self.gameScene.select()
         return missileObject(missileSpawnLocation, missileVelocity,
                              blastYield,blastRadius=0)
     def checkMissileCollision(self):
@@ -93,6 +100,7 @@ class game(object):
         return math.sqrt((x1-x2)**2+(y1-y2)**2+(z1-z2)**2)
 
     def generateCounterMissile(self,mouseInput, target):
+        self.gameScene.select()
         missileSpeed = 1
         #Get location of the launch sites
         time0=time.time()
@@ -117,9 +125,20 @@ class game(object):
                              blastYield,blastRadius=0,target=mouseInput,
                              counter=True)
     def timerFired(self):
+
+        #radar missle operatoins
+        self.radar.radarScene.select()
+        for radarMis in self.radar.radarMisList:
+            if not radarMis.timerFired(self.deltaT):
+                self.radar.radarMisList.remove(radarMis)
+
+
+        self.gameScene.select()
         mousePos=self.gameScene.mouse.pos
         self.ui.timerFired(mousePos.x)
+
         #missle operations
+        self.gameScene.select()
         if random.randint(0,100)<1:
             self.missileList.append(self.generateMissile(self.target))
             if self.gameScene.autoscale:
@@ -141,6 +160,9 @@ class game(object):
         camZ = math.cos(self.camTheta) * self.camRadius
         self.gameScene.forward = vector(camX, self.camY, camZ)
 
+
+        #updates radar missles
+        self.radar.updateMis(self.target, self.missileList)
 
     def run(self):
         self.gameScene.select()
