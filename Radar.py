@@ -14,17 +14,26 @@ class Radar(object):
                                background=self.background,x=800,y=450)
 
         self.radarScene.select()
+        self.radarScene.lights = (distant_light(direction = ( 0, 1,  0), color = color.gray(.4)),
+                                  distant_light(direction = ( 0, 1, -1), color = color.gray(.2)),
+                                  distant_light(direction = ( 0, 1,  1), color = color.gray(.2)),
+                                  distant_light(direction = (-1, 1,  0), color = color.gray(.2)),
+                                  distant_light(direction = ( 1, 1,  0), color = color.gray(.2)),)
         self.radarScene.forward = vector(0, -1, -3)
         self.radarScene.userZoom = False
         self.radarScene.userSpin = False
         #draws the cylinder for radar
         cylinder(pos=(0,0,0), axis=(0,-2,0),
-                 radius=15, color = (0,1,.5))
+                 radius=15, color = (.18, .49, .196))
         #draws the rods for navigation
-        cylinder(pos=(0,-.85,0),axis=(14.5,0,0),radius=1, color = color.green)
-        cylinder(pos=(0,-.85,0),axis=(0,0,14.5),radius=1, color = color.yellow)
-        cylinder(pos=(0,-.85,0),axis=(-14.5,0,0),radius=1, color = color.blue)
-        cylinder(pos=(0,-.85,0),axis=(0,0,-14.5),radius=1, color = color.orange)
+        green = (.114, .914, .714)
+        blue = (0, .69, 100)
+        yellow = (1, 1, 0)
+        orange = (1, .439, .263)
+        cylinder(pos=(0,-.85,0),axis=(14.5,0,0),radius=1, color = green)
+        cylinder(pos=(0,-.85,0),axis=(0,0,14.5),radius=1, color = yellow)
+        cylinder(pos=(0,-.85,0),axis=(-14.5,0,0),radius=1, color = blue)
+        cylinder(pos=(0,-.85,0),axis=(0,0,-14.5),radius=1, color = orange)
 
         #gets the intial camera view
         self.camRadius = 20

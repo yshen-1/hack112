@@ -25,7 +25,7 @@ class missileObject(object):
         self.radius=0.05
         self.targetThreshold=0.05
         self.despawnLength = 10
-        self.color=color.white if not counter else color.green
+        self.color=color.red if not counter else color.green
         self.blastRadius=blastRadius
         self.blastYield=blastYield
         self.velocity=velocity

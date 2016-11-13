@@ -23,7 +23,11 @@ class game(object):
         self.target = Target(0,0,0,1)
 
         #camera operations
-
+        self.gameScene.lights = (distant_light(direction = ( 1, 0,  0), color = color.gray(.4)),
+                                 distant_light(direction = (-1, 0,  0), color = color.gray(.5)),
+                                 distant_light(direction = ( 0, 0,  1), color = color.gray(.6)),
+                                 distant_light(direction = ( 0, 0, -1), color = color.gray(.7)),
+                                 )
         self.gameScene.userzoom = False
         self.gameScene.userspin = False
         self.gameScene.range = ((5,5,5))
