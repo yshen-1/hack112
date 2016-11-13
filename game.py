@@ -9,8 +9,8 @@ class missileObject(object):
         self.blastRadius=blastRadius
         self.blastYield=blastYield
         self.velocity=velocity
-        (self.launchX,self.launchY,self.launchZ)=launchLocation
-        (self.x,self.y,self.z)=launchLocation
+        self.launchLocation=launchLocation
+        self.location=launchLocation
     def spawnMissiles(self):
         pass
     def explode(self):
@@ -32,7 +32,7 @@ class game(object):
         self.gameScene.select()
         self.target = Target(0,0,0,2)
         self.target.draw()
-        #self.ball = sphere(pos=(0, 0, 0), radius=2, material=materials.earth)
+        self.ball = sphere(pos=(0, 0, 0), radius=2, material=materials.earth)
         self.gameOver=False
     def run(self):
         while not self.gameOver:
@@ -40,6 +40,7 @@ class game(object):
             if key=='esc':
                 print("Game over")
                 self.gameOver=True
+            
         exit()
 missileCommand=game()
 missileCommand.run()
