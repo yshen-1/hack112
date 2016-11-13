@@ -2,6 +2,11 @@ from __future__ import print_function,division
 from visual import *
 from Target import Target
 
+
+def generateMissile():
+    pass
+
+
 class missileObject(object):
     def __init__(self,launchLocation,velocity,blastYield,blastRadius=0):
         self.radius=0.1
@@ -32,6 +37,7 @@ class game(object):
         self.gameScene.select()
         self.target = Target(0,0,0,2)
         self.target.draw()
+        self.missileList = []
         #self.ball = sphere(pos=(0, 0, 0), radius=2, material=materials.earth)
         self.gameOver=False
     def run(self):
