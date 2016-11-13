@@ -20,14 +20,23 @@ class Radar(object):
         #draws the cylinder for radar
         cylinder(pos=(0,0,0), axis=(0,-2,0),
                  radius=15, color = (0,1,.5))
+        #draws the rods for navigation
+        cylinder(pos=(0,-.85,0),axis=(14.5,0,0),radius=1, color = color.green)
+        cylinder(pos=(0,-.85,0),axis=(0,0,14.5),radius=1, color = color.yellow)
+        cylinder(pos=(0,-.85,0),axis=(-14.5,0,0),radius=1, color = color.blue)
+        cylinder(pos=(0,-.85,0),axis=(0,0,-14.5),radius=1, color = color.orange)
+
+        #gets the intial camera view
         self.camRadius = 20
         self.camTheta = 0
-        cylinder(pos=(0,-.75,0),axis=(14,0,0),radius=1)
+        camX = math.sin(self.camTheta) * self.camRadius
+        camZ = math.cos(self.camTheta) * self.camRadius
+        self.radarScene.forward = vector(camX, -10, camZ)
 
         #for the test code
         self.gameOver = False
 
-    def update(self, target, missleList, cameraMove):
+    def updateMis(self, target, missleList):
         #updates and draws missles
         self.radarScene.select()
         (targetX, targetY, targetZ) = target.position
@@ -41,6 +50,12 @@ class Radar(object):
             
             sphere(pos=(modelX,modelY,0), radius = 3, color = color.red)
 
+    def updateCam(dCamTheta):
+        self.camTheta += dCamTheta
+        camX = math.sin(self.camTheta) * self.camRadius
+        camZ = math.cos(self.camTheta) * self.camRadius
+        self.radarScene.forward = vector(camX, -10, camZ)
+
     def test(self):
         while not self.gameOver:
             if self.radarScene.kb.keys!=0:
@@ -49,21 +64,21 @@ class Radar(object):
                     print("Game over")
                     self.gameOver=True
                 elif key == "right":
-                    print('1')
+                    
                     self.camTheta += .2
                 elif key == "left":
-                    print('1')
+                    
                     self.camTheta -= .2
 
             camX = math.sin(self.camTheta) * self.camRadius
             camZ = math.cos(self.camTheta) * self.camRadius
-            self.radarScene.forward = vector(camX, -4, camZ)
+            self.radarScene.forward = vector(camX, -10, camZ)
 
             rate(100)
         exit()
 
 r = Radar()
-print('a')
+
 r.test()
 
 
