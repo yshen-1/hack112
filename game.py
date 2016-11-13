@@ -56,7 +56,7 @@ class game(object):
         #To Do, make generate missiles send missiles to the launch points
         #Generate a random spawn location and velocity
         missileSpawnLength = 6
-        missileSpeed = 0.5
+        missileSpeed = 0.4
         # make random unit vector in cylindrical coordinate.
         r = 1
         z = random.uniform(-1.0, 1.0)
@@ -87,6 +87,13 @@ class game(object):
         self.gameScene.select()
         return missileObject(missileSpawnLocation, missileVelocity,
                              blastYield,blastRadius=0)
+    def checkMissileCollision(self):
+        for missile in self.missileList:
+            for explosion in self.explosionList:
+                distVector = missile.missileBody.pos - explosion.location 
+                if(distVector.mag <= missile.missileBody.radius+explosion.blastRadius):
+                    print("Missiles Collided")
+                    missile.timerFired(self.deltaT,self.target.radius,collide = True)
 
     @staticmethod
     def dist(x1,y1,z1,x2,y2,z2):
@@ -117,7 +124,6 @@ class game(object):
         return missileObject(closestLaunchSite, counterMissileVelocity,
                              blastYield,blastRadius=0,target=mouseInput,
                              counter=True)
-
     def timerFired(self):
 
         #radar missle operatoins
