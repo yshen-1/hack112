@@ -1,18 +1,24 @@
 from __future__ import print_function,division
 from visual import *
 class missileObject(object):
-    def __init__(self,launchLocation,velocity,blastRadius):
+    def __init__(self,launchLocation,velocity,blastYield,blastRadius=0):
+        self.radius=0.1
+        self.color=color.red
         self.blastRadius=blastRadius
+        self.blastYield=blastYield
         self.velocity=velocity
         (self.launchX,self.launchY,self.launchZ)=launchLocation
+        (self.x,self.y,self.z)=launchLocation
     def spawnMissiles(self):
         pass
     def explode(self):
         pass
     def checkCollision(self):
         pass
+    def timerFired(self):
 class game(object):
     def __init__(self):
+        self.deltaT=0.05
         self.width=500
         self.height=500
         self.sceneCenter=(0,0,0)
