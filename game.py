@@ -4,9 +4,15 @@ from Target import Target
 import math,random
 
 
-
-
-
+explosionList = []
+def dist(x1,y1,x2,y2):
+    return sqrt((x1-x2)**2 + (y1-y2)**2)
+def checkCollision(missileX,missileY):
+    for explosion in explosionList:
+        (explosionX,explosionY, explosionRadius) = explosion
+        if(dist(missileX,missileY,explosionX,explosionY) < explosionRadius):
+            return True
+    return False
 class missileObject(object):
     def __init__(self,launchLocation,velocity,blastYield,blastRadius=0):
         self.destroyed=False
@@ -22,6 +28,8 @@ class missileObject(object):
         pass
     def explode(self):
         self.destroyed=True
+        (locationX,locationY) = self.missileBody.pos
+        explosionList += (locationX,locationY,self.blastRadius)
         del self.missileBody
         explosion=sphere(pos=tuple(self.location),
                          radius=self.blastRadius,color=color.red)
