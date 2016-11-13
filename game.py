@@ -111,6 +111,8 @@ class game(object):
                              counter=True)
 
     def timerFired(self):
+        mousePos=self.gameScene.mouse.pos
+        self.ui.timerFired(mousePos.x)
         #missle operations
         if random.randint(0,100)<1:
             self.missileList.append(self.generateMissile(self.target))
