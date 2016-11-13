@@ -14,20 +14,19 @@ class game(object):
         self.height=800
         self.sceneCenter=(0,0,0)
         self.background=(0,0,0)
-        self.gameScene=display(title="3D missile command",
-                               width=self.width,
-                               height=self.height,
-                               center=self.sceneCenter,
+        self.gameScene=display(title="3D missile command",width=self.width,
+                               height=self.height,center=self.sceneCenter,
                                background=self.background)
-
         self.gameScene.select()
 
         #creating earth
         self.target = Target(0,0,0,1)
         #camera operations
+
         self.gameScene.userzoom = False
         self.gameScene.userspin = False
         self.gameScene.range = ((5,5,5))
+
         self.camTheta = math.pi
         self.camRadius = 10
 
