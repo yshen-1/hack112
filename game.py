@@ -23,7 +23,11 @@ class game(object):
         self.target = Target(0,0,0,1)
 
         #camera operations
-
+        self.gameScene.lights = (distant_light(direction = ( 1, 0,  0), color = color.gray(.4)),
+                                 distant_light(direction = (-1, 0,  0), color = color.gray(.5)),
+                                 distant_light(direction = ( 0, 0,  1), color = color.gray(.6)),
+                                 distant_light(direction = ( 0, 0, -1), color = color.gray(.7)),
+                                 )
         self.gameScene.userzoom = False
         self.gameScene.userspin = False
         self.gameScene.range = ((5,5,5))
@@ -106,6 +110,7 @@ class game(object):
                              counter=True)
 
     def timerFired(self):
+        #missle operations
         if random.randint(0,100)<1:
             self.missileList.append(self.generateMissile(self.target))
             if self.gameScene.autoscale:
@@ -122,8 +127,16 @@ class game(object):
         self.explosionList=[self.explosionList[i] for i in
                             range(len(self.explosionList))
                             if not self.explosionList[i].over]
+
+        #camera ops
+        camX = math.sin(self.camTheta) * self.camRadius
+        camZ = math.cos(self.camTheta) * self.camRadius
+        self.gameScene.forward = vector(camX, 0, camZ)
+
     def run(self):
+        self.gameScene.select()
         while not self.gameOver:
+            #mouse events
             if self.gameScene.mouse.events!=0:
                 print("Click!")
                 event=self.gameScene.mouse.getevent()
@@ -133,6 +146,7 @@ class game(object):
                                             (location,self.target))
 
             if self.gameScene.kb.keys!=0:
+
                 key=self.gameScene.kb.getkey()
                 if key=='esc':
                     print("Game over")
@@ -146,9 +160,8 @@ class game(object):
                     self.radar.updateCam(.2)
                     self.gameScene.select()
 
-            camX = math.sin(self.camTheta) * self.camRadius
-            camZ = math.cos(self.camTheta) * self.camRadius
-            self.gameScene.forward = vector(camX, 0, camZ)
+            
+            #timer fired
             self.timerFired()
 
             rate(100)
