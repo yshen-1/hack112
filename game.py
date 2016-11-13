@@ -2,7 +2,7 @@ from __future__ import print_function,division
 from visual import *
 from Target import Target
 import math
-
+import random
 
 
 class Target(object):
@@ -63,26 +63,37 @@ class game(object):
         self.missileList = []
         self.gameOver=False
 
-    def generateMissile(velocity=3, blastYield=2, blastRadius=0):
+    def generateMissile(blastYield=2, blastRadius=0):
+        #Generate a random spawn location and velocity
         missileSpawnLength = 20
+        missileSpeed = 3
         # make random unit vector in cylindrical coordinate.
         r = 1
         z = random.uniform(-1.0, 1.0)
         theta = random.uniform(0.0, 2 * math.pi)
         # convert to cartesian
-        x = math.sqrt(1 - z ** 2) * math.cos(theta)
-        y = math.sqrt(1 - z ** 2) * math.sin(theta)
-        z = z
-        # Add magnitude to the unit vector:
-        x *= missileSpawnLength
-        y *= missileSpawnLength
-        z *= missileSpawnLength
-        missileSpawnLocation = vector(x, y, z)
-        return missile(missileSpawnLocation, velocity, blastYield,
-                       blastRadius=0)
+        xPos = math.sqrt(1 - z ** 2) * math.cos(theta)
+        yPos = math.sqrt(1 - z ** 2) * math.sin(theta)
+        zPos = z
+        #Generate the missileVelocity (invert the position vector)
+        xVel = -xPos
+        yVel = -yPos
+        zVel = -zPos
+        #Add magnitude to the velocity unit vector
+        xVel *= missileSpeed
+        yVel *= missileSpeed
+        zVel *= missileSpeed
+        missileVelocity = vector(xVel, yVel, zVel)
+
+        #Add magnitude to the position unit vector:
+        xPos *= missileSpawnLength
+        yPos *= missileSpawnLength
+        zPos *= missileSpawnLength
+        missileSpawnLocation = vector(xPos, yPos, zPos)
+        return missile(missileSpawnLocation, missileVelocity, blastYield,blastRadius=0)
 
     def timerFired(self):
-        for i in range(len(self.missileList:
+        for i in range(len(self.missileList)):
             if missile.timerFired():
 
     def run(self):
