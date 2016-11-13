@@ -12,3 +12,5 @@ class targetRing(object):
 class ui(object):
     def __init__(self,ringRadius):
         self.ring=targetRing(ringRadius)
+    def timerFired(self,newRingRadius):
+        self.ring.timerFired(newRingRadius)

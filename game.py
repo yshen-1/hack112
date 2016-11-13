@@ -3,6 +3,7 @@ from visual import *
 from Target import Target
 from Radar import Radar
 from missileObject import missileObject
+from ui import  ui
 import math,random,time
 
 
@@ -21,7 +22,7 @@ class game(object):
 
         #creating earth
         self.target = Target(0,0,0,1)
-
+        self.ui=ui(self.target.radius)
         #camera operations
         self.gameScene.lights = (distant_light(direction = ( 1, 0,  0), color = color.gray(.4)),
                                  distant_light(direction = (-1, 0,  0), color = color.gray(.5)),
@@ -164,7 +165,7 @@ class game(object):
                     self.radar.updateCam(.2)
                     self.gameScene.select()
 
-            
+
             #timer fired
             self.timerFired()
 
