@@ -41,10 +41,8 @@ class missileObject(object):
     def spawnMissiles(self):
         pass
     def timerFired(self,deltaT,targetRadius, collide = False):
-        self.missileBody.pos+=self.velocity*deltaT
         if ((mag(vector(self.missileBody.pos))<targetRadius) or
             (mag(vector(self.missileBody.pos))>self.despawnLength) or
-            (collide == True) or
             (self.target!=None and
             (missileObject.distance(self.missileBody.pos,vector(self.target))
                                     <self.targetThreshold))):
@@ -57,3 +55,13 @@ class missileObject(object):
             del self.missileBody.trail_object
             del self.missileBody
             return explosion(missileLocation,blastRadius,blastYield)
+        self.missileBody.pos+=self.velocity*deltaT
+    def destroy(self):
+            self.destroyed=True
+            missileLocation=self.missileBody.pos
+            blastRadius=0
+            blastYield=self.blastYield
+            self.missileBody.visible=False
+            self.missileBody.trail_object.visible=False
+            del self.missileBody.trail_object
+            del self.missileBody

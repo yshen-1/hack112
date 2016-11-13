@@ -80,7 +80,7 @@ class game(object):
         #Add magnitude to the velocity unit vector
         missileVelocity.mag = missileSpeed
 
-        blastYield=0.3
+        blastYield=1
 
         radarMissile = radarMis(self.radar, missileSpawnLocation, missileVelocity)
         self.radar.radarMisList.append(radarMissile)
@@ -89,11 +89,14 @@ class game(object):
                              blastYield,blastRadius=0)
     def checkMissileCollision(self):
         for missile in self.missileList:
+            result = None
             for explosion in self.explosionList:
-                distVector = missile.missileBody.pos - explosion.location 
+                distVector = missile.missileBody.pos - explosion.location
                 if(distVector.mag <= missile.missileBody.radius+explosion.blastRadius):
-                    print("Missiles Collided")
-                    missile.timerFired(self.deltaT,self.target.radius,collide = True)
+                    result=missile.timerFired(self.deltaT,self.target.radius,collide = True)
+                    break
+            if(result != None):
+                self.explosionList.append(result)
 
     @staticmethod
     def dist(x1,y1,z1,x2,y2,z2):
@@ -125,7 +128,13 @@ class game(object):
                              blastYield,blastRadius=0,target=mouseInput,
                              counter=True)
     def timerFired(self):
-
+        self.missileList=[self.missileList[i] for i in
+                          range(len(self.missileList))
+                          if not self.missileList[i].destroyed]
+        self.checkMissileCollision()
+        self.missileList=[self.missileList[i] for i in
+                          range(len(self.missileList))
+                          if not self.missileList[i].destroyed]
         #radar missle operatoins
         self.radar.radarScene.select()
         for radarMis in self.radar.radarMisList:
