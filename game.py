@@ -1,5 +1,6 @@
 from __future__ import print_function,division
 from visual import *
+
 class missileObject(object):
     def __init__(self,launchLocation,velocity,blastYield,blastRadius=0):
         self.radius=0.1
