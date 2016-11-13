@@ -12,13 +12,13 @@ class Target(object):
         self.draw()
 
     def findTargetLaunchPoints(self):
-        #gets the target points
+        # gets the target points (8 evenly distributed points)
         points = []
         for theta in [0, math.pi/2, math.pi, math.pi*3/2]:
             for phi in [.9553, 2.186]:
-                x = math.sin(phi)*math.cos(theta)*self.radius
-                y = math.sin(phi)*math.sin(theta)*self.radius
-                z = math.cos(phi)*self.radius
+                x = math.sin(phi)*math.sin(theta)*self.radius
+                y = math.cos(phi)*self.radius
+                z = math.sin(phi)*math.cos(theta)*self.radius
                 points += [vector(x, y, z)]
         return points
   
@@ -33,10 +33,10 @@ class Target(object):
         #draws target or earth
         sphere(pos=tuple(self.position), radius=self.radius,
                material=materials.earth)
-        colors = [color.red, color.blue, color.green, color.yellow]
+        colors = [color.orange, color.blue, color.yellow, color.green]
         #puts the launch points silos
         for p in range(len(self.launchPoints)):
             point = self.launchPoints[p]
             c = colors[p//2]
             print(c, point)
-            sphere(pos = tuple(point), radius = self.radius/20, color = c)
+            sphere(pos = tuple(point), radius = self.radius/10, color = c)

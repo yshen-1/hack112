@@ -8,8 +8,8 @@ import math,random
 class game(object):
     def __init__(self):
         self.deltaT=0.05
-        self.width=500
-        self.height=500
+        self.width=800
+        self.height=800
         self.sceneCenter=(0,0,0)
         self.background=(0,0,0)
         self.gameScene=display(title="3D missile command",
