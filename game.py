@@ -3,7 +3,7 @@ from visual import *
 from Target import Target
 import math
 
-def generateMissile():
+def generateMissile(missileSpawnLength):
     missileSpawnLength = 20
     #make random cylindrical coordinate.
     r = 1
@@ -16,15 +16,21 @@ def generateMissile():
 
     missileStartPos = vector(x,y,z)
     return (x,y,z)
-    pass
-def almostEqual(d1, d2, epsilon=10**-7):
-    # note: use math.isclose() outside 15-112 with Python version 3.5 or later
-    return (abs(d2 - d1) < epsilon)
-def testGenerateMissile():
-    (x,y,z) = generateMissile
-    assert(almostEqual(x^2+y^2+z^2, 1))
 
-testGenerateMissile()
+class Target(object):
+    def __init__(self, x, y, z, radius):
+        self.position = vector(x, y, z)
+        self.radius = radius
+
+    def checkCollision(missile):
+        missilePos = missile.position
+        collisionRadius = self.radius + missile.radius
+        distance = (misslePos-self.position).mag
+        return distance < collisionRadius
+
+    def draw(self):
+        sphere(pos=tuple(self.position), radius=self.radius,
+               material=materials.earth)
 
 class missileObject(object):
     def __init__(self,launchLocation,velocity,blastYield,blastRadius=0):
@@ -38,11 +44,22 @@ class missileObject(object):
     def spawnMissiles(self):
         pass
     def explode(self):
-        pass
+        explosion=sphere(pos=tuple(self.location),
+                         radius=self.blastRadius,color=color.red)
+        while self.blastRadius<self.blastYield:
+            self.blastRadius+=0.01
+            explosion.radius=self.blastRadius
+        del explosion
     def checkCollision(self):
         pass
-    def timerFired(self):
-        pass
+    def timerFired(self,deltaT):
+        self.location=self.location+self.velocity*deltaT
+        '''
+        if self.checkCollision():
+            self.explode()
+            return True
+        '''
+        return False
 class game(object):
     def __init__(self):
         self.deltaT=0.05
@@ -64,7 +81,8 @@ class game(object):
             if key=='esc':
                 print("Game over")
                 self.gameOver=True
-
+            self.timerFired()
+            self.drawAll()
         exit()
 missileCommand=game()
 missileCommand.run()
