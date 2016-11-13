@@ -86,7 +86,8 @@ class game(object):
             if self.gameScene.mouse.events!=0:
                 event=self.gameScene.mouse.getclick()
                 location=event.pos
-                self.missileList.append(self.generateMissile(location))
+                #@TODO make generate counter missile function
+                #self.missileList.append(self.generateMissile(location))
 
             if self.gameScene.kb.keys!=0:
                 key=self.gameScene.kb.getkey()
