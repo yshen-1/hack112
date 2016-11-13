@@ -92,10 +92,12 @@ class game(object):
                 distVector = missile.missileBody.pos - explosion.location
                 if(distVector.mag <= missile.missileBody.radius+explosion.explosion.radius):
                     print("Missiles Collided!")
-                    result=missile.timerFired(self.deltaT,self.target.radius,collide = True)
+                    result=missile.timerFired(self.deltaT,self.target.radius,collide = True,secondary=True)
+                    print (result.location,result.blastYield)
                     break
             if(result != None):
                 self.explosionList.append(result)
+                print("New explosion! at ",str(result.location))
 
     @staticmethod
     def dist(x1,y1,z1,x2,y2,z2):
@@ -127,10 +129,6 @@ class game(object):
                              blastYield,blastRadius=0,target=mouseInput,
                              counter=True)
     def timerFired(self):
-
-        self.missileList=[self.missileList[i] for i in
-                          range(len(self.missileList))
-                          if not self.missileList[i].destroyed]
         self.checkMissileCollision()
         self.missileList=[self.missileList[i] for i in
                           range(len(self.missileList))
@@ -140,12 +138,7 @@ class game(object):
         for radarMis in self.radar.radarMisList:
             if not radarMis.timerFired(self.deltaT):
                 self.radar.radarMisList.remove(radarMis)
-
-
         self.gameScene.select()
-        mousePos=self.gameScene.mouse.pos
-
-
         #missle operations
         self.gameScene.select()
         if random.randint(0,1000)<2:
