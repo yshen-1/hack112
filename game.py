@@ -34,9 +34,9 @@ class game(object):
 
     def generateMissile(blastRadius=0):
         #Generate a random spawn location and velocity
-        missileSpawnLength = 5
+        missileSpawnLength = 6
         missileSpeed = 0.5
-        missileError = 0.05
+        missileError = 0.1
         # make random unit vector in cylindrical coordinate.
         r = 1
         z = random.uniform(-1.0, 1.0)
@@ -70,7 +70,7 @@ class game(object):
 
     def timerFired(self):
         print("Timer fired!")
-        if random.randint(0,10)<1:
+        if random.randint(0,100)<3:
             self.missileList.append(self.generateMissile())
             print("Missile spawned!")
         for missile in self.missileList:
