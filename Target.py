@@ -15,7 +15,7 @@ class Target(object):
         #gets the target points
         points = []
         for theta in [0, math.pi/2, math.pi, math.pi*3/2]:
-            for phi in [math.pi/4, math.pi*3/4]:
+            for phi in [.9553, 2.186]:
                 x = math.sin(phi)*math.cos(theta)*self.radius
                 y = math.sin(phi)*math.sin(theta)*self.radius
                 z = math.cos(phi)*self.radius
