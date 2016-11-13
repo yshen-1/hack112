@@ -13,7 +13,7 @@ class explosion(object):
                               radius=self.blastRadius+0.0005,color=(1, 1, 0))
     def timerFired(self):
         self.explosion.radius+=0.01
-        self.explosion.opacity -= .01
+        self.explosion.opacity -= 0.01
         (r, g, b) = self.explosion.color
         g -= 0.01
         self.explosion.color = (r, g, b)
@@ -46,7 +46,7 @@ class missileObject(object):
     def spawnMissiles(self):
         pass
     def timerFired(self,deltaT,targetRadius, collide = False):
-        if ((mag(vector(self.missileBody.pos))<targetRadius) or
+        if collide or ((mag(vector(self.missileBody.pos))<targetRadius) or
             (mag(vector(self.missileBody.pos))>self.despawnLength) or
             (self.target!=None and
             (missileObject.distance(self.missileBody.pos,vector(self.target))
