@@ -41,5 +41,6 @@ class missileObject(object):
             blastYield=self.blastYield
             self.missileBody.visible=False
             del self.missileBody
+            del self.missileBody.trail_object
             return explosion(missileLocation,blastRadius,blastYield)
 
