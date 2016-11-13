@@ -1,14 +1,14 @@
 from __future__ import division, print_function
 from visual import *
-#bouncing ball
-ball = sphere(pos=(-5,0,0), radius=0.5, color=color.cyan)
-wallR = box(pos=(6,0,0), size=(0.2,12,12), color=color.green)
-ball.velocity=vector(25,0,0)
-deltat=0.005
-t=0
-while t<50:
-    ball.pos=ball.pos+ball.velocity*deltat
-    if ball.pos.x>wallR.pos.x or ball.pos.x<-10:
-        ball.velocity*=-1
-    t+=deltat
-    rate(100)
+
+width=500
+height=500
+sceneCenter=(0,0,0)
+background=(0,0,0)
+gameScene=display(title="3D missile command",width=width,
+                       height=height,center=sceneCenter,
+                       background=background)
+gameScene.select()
+radar = cylinder(pos=(0,0,0), axis=(0, -2, 0), radius=15)
+rod = cylinder(pos=(0,-.75,0), axis=(14, 0, 0), radius = 1)
+gameScene.forward = vector(0, -1, -3)
