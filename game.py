@@ -5,6 +5,7 @@ from Radar import Radar
 from Radar import radarMis
 from splashScreen import splashScreen
 from missileObject import missileObject
+from scoreScreen import scoreScreen
 import math,random,time
 
 
@@ -46,9 +47,20 @@ class game(object):
         self.radar = Radar()
         self.gameScene.select()
 
+
+        #creating scoreScreen
+        self.scoreScreen = scoreScreen()
+        self.gameScene.select()
+
+        #creating scores
+        self.missilesHit = 0
+        self.hitby = 0
+
+
         #enemy missile spawn counter
         self.spawnCounter = 0
         self.spawnCounterMax = 600
+
     def generateMissile(self, target):
         blastRadius = 0
 
@@ -93,8 +105,11 @@ class game(object):
                 distVector = missile.missileBody.pos - explosion.location
                 if(distVector.mag <= missile.missileBody.radius+explosion.explosion.radius):
                     print("Missiles Collided!")
-                    result=missile.timerFired(self.deltaT,self.target.radius,collide = True,secondary=True)
-                    print (result.location,result.blastYield)
+
+                    if missile.counter == False:
+                        self.scoreScreen.missilesHit += 1
+                    result=missile.timerFired(self.deltaT,self.target.radius,collide = True)
+
                     break
             if(result != None):
                 self.explosionList.append(result)
@@ -152,6 +167,7 @@ class game(object):
                 self.gameScene.autoscale=False
         for missile in self.missileList:
             result=missile.timerFired(self.deltaT,self.target.radius)
+            if missile.hitEarth: self.scoreScreen.missilesHitEarth += 1
             if result!=None:
                 self.explosionList.append(result)
         for explosion in self.explosionList:
@@ -170,6 +186,9 @@ class game(object):
 
         #updates radar missles
         self.radar.updateMis(self.target, self.missileList)
+
+        #updates scorescreen
+        self.scoreScreen.timerFired()
 
     def run(self):
         self.gameScene.select()
@@ -209,5 +228,5 @@ class game(object):
         exit()
 
 
-missileCommand=game()
-missileCommand.run()
+# missileCommand=game()
+# missileCommand.run()

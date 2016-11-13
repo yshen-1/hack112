@@ -41,6 +41,7 @@ class missileObject(object):
                                 radius=self.radius,color=self.color,
                                 make_trail = True)
         self.missileBody.trail_object.color=color.orange
+        self.hitEarth = False
     @staticmethod
     def distance(point1,point2): #point1, point2 vectors
         return mag(point1-point2)
@@ -52,6 +53,8 @@ class missileObject(object):
             (self.target!=None and
             (missileObject.distance(self.missileBody.pos,vector(self.target))
                                     <self.targetThreshold))):
+            if (mag(vector(self.missileBody.pos))<targetRadius):
+                self.hitEarth = True
             self.destroyed=True
             missileLocation=self.missileBody.pos
             blastRadius=0

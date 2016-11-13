@@ -8,3 +8,9 @@ from game import game
 from missileObject import missileObject
 import math,random,time
 
+s = splashScreen()
+s.run()
+
+missileCommand=game()
+missileCommand.run()
+
