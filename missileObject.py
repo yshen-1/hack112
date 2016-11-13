@@ -5,14 +5,18 @@ import math,random
 class explosion(object):
     def __init__(self,location,blastRadius,blastYield):
         self.over=False
-        self.color=color.yellow
         self.location=location
         self.blastRadius=blastRadius
         self.blastYield=blastYield
         self.explosion=sphere(pos=self.location,
-                              radius=self.blastRadius+0.0005,color=self.color)
+                              radius=self.blastRadius+0.0005,color=(1, 1, 0))
     def timerFired(self):
         self.explosion.radius+=0.01
+        self.explosion.opacity -= .025
+        (r, g, b) = self.explosion.color
+        g -= 0.01
+        self.explosion.color = (r, g, b)
+        print(self.explosion.color)
         if (self.explosion.radius>self.blastYield): #end explosion
             self.over=True
             self.explosion.visible=False
