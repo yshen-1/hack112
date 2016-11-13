@@ -1,6 +1,36 @@
 from __future__ import print_function,division
 from visual import *
 
+class radarMis(object):
+    def __init__(self,radar, mislaunchLocation,misVelocity,target=None):
+
+        radar.radarScene.select()
+        self.destroyed=False
+        self.radius=1
+        worldToRadar = 15/6
+        self.launchLocation = (-1 * mislaunchLocation[0] * worldToRadar,
+                               0,
+                               -1 * mislaunchLocation[2] * worldToRadar)
+            
+        self.velocity = (-1 * misVelocity[0]*(worldToRadar),
+                        0,
+                        -1 * misVelocity[2]*(worldToRadar))
+        self.color = color.red
+        self.despawn = 20
+        self.radarMisBody=sphere(pos=tuple(self.launchLocation),
+                                radius=self.radius,color=self.color)
+
+    def timerFired(self, deltaT):
+        self.radarMisBody.pos.x += self.velocity[0]*deltaT
+        self.radarMisBody.pos.z += self.velocity[2]*deltaT
+        if (mag(vector(self.radarMisBody.pos))<15/6):
+            self.destroyed=True
+            self.radarMisBody.visible=False
+            del self.radarMisBody
+            return False
+        return True
+
+
 class Radar(object):
     def __init__(self):
         #generates a new window for radar
@@ -11,7 +41,11 @@ class Radar(object):
 
         self.radarScene=display(title="Radar",width=self.width,
                                height=self.height,center=self.sceneCenter,
-                               background=self.background,x=800,y=450)
+                               background=self.background,x=800,y=450,
+                               autoscale = False, 
+                               userZoom = False,
+                               userSpin = False,
+                               range = (18,10,18))
 
         self.radarScene.select()
         self.radarScene.lights = (distant_light(direction = ( 0, 1,  0), color = color.gray(.4)),
@@ -45,20 +79,26 @@ class Radar(object):
         #for the test code
         self.gameOver = False
 
-    def updateMis(self, target, missleList):
+        #radar missles
+        self.radarMisList = []
+
+    def generateRadarMis(missle):
+        pass
+
+    def updateMis(self, target, missileList):
         #updates and draws missles
         self.radarScene.select()
         (targetX, targetY, targetZ) = target.position
         maxSpawnDistance = 15
-        for missle in missleList:
+        for missile in missileList:
             
-            (miX,miY,miZ) = missle.pos
+            (miX,miY,miZ) = missile.missileBody.pos
             
             modelX = (miX - targetX) * (1/maxSpawnDistance) * 15
-            modelY = (miY - targetY) * (1/maxSpawnDistance) * 15
+            modelZ = (miZ - targetZ) * (1/maxSpawnDistance) * 15
             
-            sphere(pos=(modelX,modelY,0), radius = 3, color = color.red)
-
+            #sphere(pos=(modelX,modelZ,0), radius = 3, color = color.red)
+ 
     def updateCam(self,dCamTheta):
         self.camTheta += dCamTheta
         camX = math.sin(self.camTheta) * self.camRadius
