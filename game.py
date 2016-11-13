@@ -29,6 +29,7 @@ class game(object):
         self.dy = -.1
 
     def generateMissile(blastRadius=0):
+        #To Do, make generate missiles send missiles to the launch points
         #Generate a random spawn location and velocity
         missileSpawnLength = 6
         missileSpeed = 0.5
