@@ -33,7 +33,6 @@ class missileObject(object):
         self.color=color.red if not counter else color.green
         self.blastRadius=blastRadius
         self.blastYield=blastYield
-        print("BlastYield: ", blastYield)
         self.velocity=velocity
         self.launchLocation=launchLocation
         self.target=target

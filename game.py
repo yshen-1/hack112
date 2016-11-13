@@ -176,13 +176,11 @@ class game(object):
         while not self.gameOver:
             #mouse events
             if self.gameScene.mouse.events!=0:
-                print("Click!")
                 event=self.gameScene.mouse.getevent()
                 if (event.release!=None):
                     location=event.pos
                     self.missileList.append(self.generateCounterMissile
                                             (location,self.target))
-
             if self.gameScene.kb.keys!=0:
 
                 key=self.gameScene.kb.getkey()
