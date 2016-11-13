@@ -53,6 +53,5 @@ class Target(object):
         for p in range(len(self.launchPoints)):
             point = self.launchPoints[p]
             c = self.colors[point]
-            print(c, point)
             cone(pos = tuple(point), radius = self.radius/10, 
                  axis = tuple(point/10), color = c)

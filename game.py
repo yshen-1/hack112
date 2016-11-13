@@ -3,8 +3,8 @@ from visual import *
 from Target import Target
 from Radar import Radar
 from Radar import radarMis
+from splashScreen import splashScreen
 from missileObject import missileObject
-from ui import  ui
 import math,random,time
 
 
@@ -19,8 +19,6 @@ class game(object):
         self.gameScene=display(title="3D missile command",width=self.width,
                                height=self.height,center=self.sceneCenter,
                                background=self.background)
-        self.gameScene.select()
-
         #creating earth
         self.target = Target(0,0,0,1)
         #camera operations
@@ -47,7 +45,6 @@ class game(object):
         #creating radar
         self.radar = Radar()
         self.gameScene.select()
-        self.ui=ui(self.target.radius)
 
 
     def generateMissile(self, target):
@@ -80,7 +77,7 @@ class game(object):
         #Add magnitude to the velocity unit vector
         missileVelocity.mag = missileSpeed
 
-        blastYield=0.3
+        blastYield=1
 
         radarMissile = radarMis(self.radar, missileSpawnLocation, missileVelocity)
         self.radar.radarMisList.append(radarMissile)
@@ -89,11 +86,15 @@ class game(object):
                              blastYield,blastRadius=0)
     def checkMissileCollision(self):
         for missile in self.missileList:
+            result = None
             for explosion in self.explosionList:
-                distVector = missile.missileBody.pos - explosion.location 
-                if(distVector.mag <= missile.missileBody.radius+explosion.blastRadius):
-                    print("Missiles Collided")
-                    missile.timerFired(self.deltaT,self.target.radius,collide = True)
+                distVector = missile.missileBody.pos - explosion.location
+                if(distVector.mag <= missile.missileBody.radius+explosion.explosion.radius):
+                    #print("Missiles Collided!")
+                    result=missile.timerFired(self.deltaT,self.target.radius,collide = True)
+                    break
+            if(result != None):
+                self.explosionList.append(result)
 
     @staticmethod
     def dist(x1,y1,z1,x2,y2,z2):
@@ -118,14 +119,21 @@ class game(object):
         time2=time.time()
         print("Launch site find time:",time2-time1)
         #Get Missile Velocity
-        counterMissileVelocity = norm(mouseInput - closestLaunchSite) #Subtract the vectors
+        counterMissileVelocity = norm(mouseInput - closestLaunchSite)#subtract the vectors
         counterMissileVelocity.mag = missileSpeed
-        blastYield=0.3
+        blastYield=5
         return missileObject(closestLaunchSite, counterMissileVelocity,
                              blastYield,blastRadius=0,target=mouseInput,
                              counter=True)
     def timerFired(self):
 
+        self.missileList=[self.missileList[i] for i in
+                          range(len(self.missileList))
+                          if not self.missileList[i].destroyed]
+        self.checkMissileCollision()
+        self.missileList=[self.missileList[i] for i in
+                          range(len(self.missileList))
+                          if not self.missileList[i].destroyed]
         #radar missle operatoins
         self.radar.radarScene.select()
         for radarMis in self.radar.radarMisList:
@@ -135,7 +143,6 @@ class game(object):
 
         self.gameScene.select()
         mousePos=self.gameScene.mouse.pos
-        self.ui.timerFired(mousePos.x)
 
         #missle operations
         self.gameScene.select()
@@ -182,11 +189,11 @@ class game(object):
                 if key=='esc':
                     print("Game over")
                     self.gameOver=True
-                elif key == "right":
+                elif key == "right" or key == "a":
                     self.camTheta -= .2
                     self.radar.updateCam(-.2)
                     self.gameScene.select()
-                elif key == "left":
+                elif key == "left" or key == "d":
                     self.camTheta += .2
                     self.radar.updateCam(.2)
                     self.gameScene.select()
@@ -202,5 +209,7 @@ class game(object):
 
             rate(100)
         exit()
+
+
 missileCommand=game()
 missileCommand.run()
