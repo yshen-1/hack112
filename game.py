@@ -29,6 +29,7 @@ class game(object):
         self.gameScene.select()
         self.target = Target(0,0,0,1)
         self.missileList = []
+        self.explosionList=[]
         self.gameOver=False
 
     def generateMissile(blastRadius=0):
@@ -73,10 +74,17 @@ class game(object):
             self.missileList.append(self.generateMissile())
             print("Missile spawned!")
         for missile in self.missileList:
-            missile.timerFired(self.deltaT,self.target.radius)
+            result=missile.timerFired(self.deltaT,self.target.radius)
+            if result!=None:
+                self.explosionList.append(result)
+        for explosion in self.explosionList:
+            explosion.timerFired()
         self.missileList=[self.missileList[i] for i in
                           range(len(self.missileList))
                           if not self.missileList[i].destroyed]
+        self.explosionList=[self.explosionList[i] for i in
+                            range(len(self.explosionList))
+                            if not self.explosionList[i].over]
     def run(self):
         while not self.gameOver:
             if self.gameScene.kb.keys!=0:
