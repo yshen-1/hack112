@@ -13,7 +13,7 @@ class missileObject(object):
         self.velocity=velocity
         self.launchLocation=launchLocation
         self.missileBody=sphere(pos=tuple(launchLocation),
-                                radius=self.radius,color=self.color)
+                                radius=self.radius,color=self.color, make_trail = True)
     def spawnMissiles(self):
         pass
     def explode(self):
