@@ -64,6 +64,3 @@ class splashScreen(object):
 
             rate(100)
         exit()
-
-s = splashScreen()
-s.run()
