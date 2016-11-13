@@ -1,19 +1,6 @@
-3D Missile Command
-Classes:
+##3D Missile Command
 
-targetObject: (earth)
-    attributes:
-        vpython sphere
-        sphere launch positions (domes on the target, center of each octant of earth)
-    methods:
-        checkCollision (for missile collisions)
-	draw (earth and dome)
+3D Missile Command, made in VPython. To play, install VPython Classic 6.0, and run run.py. Enjoy :).
 
-missileObject:
-    attributes:
-        launchPoint (point where missile is launched from)
-        blastRadius
-        velocity
-    methods:
-        checkCollision (for missile explosions triggering other missiles)
-        explode() (explodes missile, generates animation, runs collision checks)
+##Future improvements
+Missiles spawning other missiles, improved graphics+explosions.
