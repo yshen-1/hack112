@@ -22,6 +22,7 @@ class missileObject(object):
     def __init__(self,launchLocation,velocity,blastYield,target=None,
                  blastRadius=0,counter=False):
         self.destroyed=False
+        self.despawnLength = 10 #Despawn missiles that go too far away
         self.radius=0.05
         self.targetThreshold=0.05
         self.color=color.white if not counter else color.green
@@ -42,6 +43,7 @@ class missileObject(object):
     def timerFired(self,deltaT,targetRadius):
         self.missileBody.pos+=self.velocity*deltaT
         if ((mag(vector(self.missileBody.pos))<targetRadius) or
+            (mag(vector(self.missileBody.pos))>self.despawnLength) or
             (self.target!=None and
             (missileObject.distance(self.missileBody.pos,vector(self.target))
                                     <self.targetThreshold))):
@@ -54,3 +56,4 @@ class missileObject(object):
             del self.missileBody.trail_object
             del self.missileBody
             return explosion(missileLocation,blastRadius,blastYield)
+     
