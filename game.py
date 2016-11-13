@@ -1,6 +1,30 @@
 from __future__ import print_function,division
 from visual import *
 from Target import Target
+import math
+
+def generateMissile():
+    missileSpawnLength = 20
+    #make random cylindrical coordinate.
+    r = 1
+    z = random.uniform(-1.0, 1.0)
+    theta = random.uniform(0.0, 2*math.pi)
+    #convert to cartesian
+    x = r*math.cos(theta)
+    y = r*math.sin(theta)
+    z = z
+
+    missileStartPos = vector(x,y,z)
+    return (x,y,z)
+    pass
+def almostEqual(d1, d2, epsilon=10**-7):
+    # note: use math.isclose() outside 15-112 with Python version 3.5 or later
+    return (abs(d2 - d1) < epsilon)
+def testGenerateMissile():
+    (x,y,z) = generateMissile
+    assert(almostEqual(x^2+y^2+z^2, 1))
+
+testGenerateMissile()
 
 class missileObject(object):
     def __init__(self,launchLocation,velocity,blastYield,blastRadius=0):
@@ -32,7 +56,7 @@ class game(object):
         self.gameScene.select()
         self.target = Target(0,0,0,2)
         self.target.draw()
-        self.ball = sphere(pos=(0, 0, 0), radius=2, material=materials.earth)
+        self.missileList = []
         self.gameOver=False
     def run(self):
         while not self.gameOver:
@@ -40,7 +64,7 @@ class game(object):
             if key=='esc':
                 print("Game over")
                 self.gameOver=True
-            
+
         exit()
 missileCommand=game()
 missileCommand.run()
