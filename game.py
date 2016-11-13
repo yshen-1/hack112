@@ -1,40 +1,24 @@
 from __future__ import print_function,division
 from visual import *
 from Target import Target
-import math
-
-
-
-class Target(object):
-    def __init__(self, x, y, z, radius):
-        self.position = vector(x, y, z)
-        self.radius = radius
-
-    def checkCollision(missile):
-        missilePos = missile.position
-        collisionRadius = self.radius + missile.radius
-        distance = (misslePos-self.position).mag
-        return distance < collisionRadius
-
-    def draw(self):
-        return sphere(pos=tuple(self.position), radius=self.radius,
-               material=materials.earth)
-
+import math,random
 
 class missileObject(object):
     def __init__(self,launchLocation,velocity,blastYield,blastRadius=0):
+        self.destroyed=False
         self.radius=0.1
         self.color=color.red
         self.blastRadius=blastRadius
         self.blastYield=blastYield
         self.velocity=velocity
         self.launchLocation=launchLocation
-        self.location=launchLocation
         self.missileBody=sphere(pos=tuple(launchLocation),
                                 radius=self.radius,color=self.color)
     def spawnMissiles(self):
         pass
     def explode(self):
+        self.destroyed=True
+        del self.missileBody
         explosion=sphere(pos=tuple(self.location),
                          radius=self.blastRadius,color=color.red)
         while self.blastRadius<self.blastYield:
@@ -42,8 +26,9 @@ class missileObject(object):
             explosion.radius=self.blastRadius
         del explosion
     def timerFired(self,deltaT):
-        self.location=self.location+self.velocity*deltaT
-
+        self.missileBody.pos+=(self.velocity*deltaT)
+        if mag(vector(self.missileBody.pos))<0.1:
+            self.explode()
 class game(object):
     def __init__(self):
         self.deltaT=0.05
@@ -79,9 +64,13 @@ class game(object):
                        blastRadius=0)
 
     def timerFired(self):
-        for i in range(len(self.missileList:
-            if missile.timerFired():
-
+        if random.randint(0,10)<3:
+            self.missileList.append(generateMissile())
+        for missile in self.missileList:
+            missile.timerFired()
+        self.missileList=[self.missileList[i] for i in
+                          range(len(self.missileList))
+                          if not self.missileList[i].destroyed]
     def run(self):
         while not self.gameOver:
             key=self.gameScene.kb.getkey()
