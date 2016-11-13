@@ -71,6 +71,8 @@ class game(object):
     def timerFired(self):
         if random.randint(0,100)<1:
             self.missileList.append(self.generateMissile())
+            if self.gameScene.autoscale:
+                self.gameScene.autoscale=False
         for missile in self.missileList:
             result=missile.timerFired(self.deltaT,self.target.radius)
             if result!=None:
@@ -92,7 +94,6 @@ class game(object):
                     self.gameOver=True
             self.timerFired()
             rate(100)
-            #self.drawAll()
         exit()
 missileCommand=game()
 missileCommand.run()
