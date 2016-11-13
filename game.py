@@ -104,8 +104,6 @@ class game(object):
             for explosion in self.explosionList:
                 distVector = missile.missileBody.pos - explosion.location
                 if(distVector.mag <= missile.missileBody.radius+explosion.explosion.radius):
-                    print("Missiles Collided!")
-
                     if missile.counter == False:
                         self.scoreScreen.missilesHit += 1
                     result=missile.timerFired(self.deltaT,self.target.radius,collide = True)
@@ -113,7 +111,6 @@ class game(object):
                     break
             if(result != None):
                 self.explosionList.append(result)
-                print("New explosion! at ",str(result.location))
 
     @staticmethod
     def dist(x1,y1,z1,x2,y2,z2):
@@ -123,10 +120,7 @@ class game(object):
         self.gameScene.select()
         missileSpeed = 1
         #Get location of the launch sites
-        time0=time.time()
         launchSiteList = target.findTargetLaunchPoints()
-        time1=time.time()
-        print("Target find time:",time1-time0)
         #See which launch site is closest to mouse input
         shortestDist = None
         closestLaunchSite = None
@@ -135,8 +129,6 @@ class game(object):
             if(shortestDist == None or dist < shortestDist):
                 shortestDist = dist
                 closestLaunchSite = launchSite
-        time2=time.time()
-        print("Launch site find time:",time2-time1)
         #Get Missile Velocity
         counterMissileVelocity = norm(mouseInput - closestLaunchSite)#subtract the vectors
         counterMissileVelocity.mag = missileSpeed
