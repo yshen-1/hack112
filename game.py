@@ -7,16 +7,19 @@ import math
 
 class Target(object):
     def __init__(self, x, y, z, radius):
+        #initilaizatoin for target
         self.position = vector(x, y, z)
         self.radius = radius
 
     def checkCollision(missile):
+        #checks if missle hits target
         missilePos = missile.position
         collisionRadius = self.radius + missile.radius
         distance = (misslePos-self.position).mag
         return distance < collisionRadius
 
     def draw(self):
+        #draws sphere
         return sphere(pos=tuple(self.position), radius=self.radius,
                material=materials.earth)
 
