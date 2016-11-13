@@ -1,5 +1,6 @@
 from __future__ import print_function,division
 from visual import *
+from Target import Target
 
 class missileObject(object):
     def __init__(self,launchLocation,velocity,blastYield,blastRadius=0):
@@ -28,7 +29,9 @@ class game(object):
                                height=self.height,center=self.sceneCenter,
                                background=self.background)
         self.gameScene.select()
-        self.ball = sphere(pos=(0, 0, 0), radius=2, material=materials.earth)
+        self.target = Target(0,0,0,2)
+        self.target.draw()
+        #self.ball = sphere(pos=(0, 0, 0), radius=2, material=materials.earth)
         self.gameOver=False
     def run(self):
         while not self.gameOver:
