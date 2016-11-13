@@ -4,11 +4,12 @@ from Target import Target
 from missileObject import missileObject
 import math,random,time
 
+
 class game(object):
     def __init__(self):
         self.deltaT=0.05
-        self.width=500
-        self.height=500
+        self.width=800
+        self.height=800
         self.sceneCenter=(0,0,0)
         self.background=(0,0,0)
         self.gameScene=display(title="3D missile command",
@@ -94,6 +95,7 @@ class game(object):
         return missileObject(closestLaunchSite, counterMissileVelocity,
                              blastYield,blastRadius=0,target=mouseInput,
                              counter=True)
+
     def timerFired(self):
         if random.randint(0,100)<1:
             self.missileList.append(self.generateMissile())

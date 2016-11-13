@@ -24,9 +24,6 @@ class Radar(object):
         self.camTheta = 0
         cylinder(pos=(0,-.75,0),axis=(14,0,0),radius=1)
 
-        #for the test code
-        self.gameOver = False
-
     def update(self, target, missleList, cameraMove):
         #updates and draws missles
         self.radarScene.select()
@@ -41,29 +38,26 @@ class Radar(object):
             
             sphere(pos=(modelX,modelY,0), radius = 3, color = color.red)
 
-    def test(self):
-        while not self.gameOver:
-            if self.radarScene.kb.keys!=0:
-                key=self.radarScene.kb.getkey()
-                if key=='esc':
-                    print("Game over")
-                    self.gameOver=True
-                elif key == "right":
-                    print('1')
-                    self.camTheta += .2
-                elif key == "left":
-                    print('1')
-                    self.camTheta -= .2
+    # def test(self):
+    #     pass
+        # while True:
+        #     if self.radarScene.kb.keys!=0:
+        #         key=self.radarScene.kb.getkey()
+        #         if key=='esc':
+        #             print("Game over")
+        #             self.gameOver=True
+        #         elif key == "right":
+        #             print('1')
+        #             self.camTheta += .2
+        #         elif key == "left":
+        #             print('1')
+        #             self.camTheta -= .2
 
-            camX = math.sin(self.camTheta) * self.camRadius
-            camZ = math.cos(self.camTheta) * self.camRadius
-            self.radarScene.forward = vector(camX, -4, camZ)
-
-            rate(100)
-        exit()
+        #     camX = math.sin(self.camTheta) * self.camRadius
+        #     camZ = math.cos(self.camTheta) * self.camRadius
+        #     self.radarScene.forward = vector(camX, -1, camZ)
 
 r = Radar()
-print('a')
-r.test()
+# r.test()
 
 
