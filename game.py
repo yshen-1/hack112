@@ -28,6 +28,11 @@ class game(object):
                                background=self.background)
         self.gameScene.select()
         self.target = Target(0,0,0,1)
+        self.gameScene.userzoom = False
+        self.gameScene.userspin = False
+        self.camX = 0
+        self.camY = 0
+        self.camZ = -1
         self.missileList = []
         self.explosionList=[]
         self.gameOver=False
@@ -92,7 +97,11 @@ class game(object):
                 if key=='esc':
                     print("Game over")
                     self.gameOver=True
+                if key == "right":
+                    self.camX += .1
+            self.gameScene.forward = vector(self.camX, self.camY, self.camZ)
             self.timerFired()
+
             rate(100)
         exit()
 missileCommand=game()
