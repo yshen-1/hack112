@@ -75,6 +75,9 @@ class Radar(object):
         #draws the cylinder for radar
         cylinder(pos=(0,0,0), axis=(0,-2,0),
                  radius=15, color = (.18, .49, .196))
+        planeSurface = (self.radarScene.forward[0]/100, 0, self.radarScene.forward[2]/100)
+        self.plane = cylinder(pos = (0,0,0), axis = planeSurface
+                              , radius = 100, color = color.white, opacity = .5)
         #draws the rods for navigation
         green = (.114, .914, .714)
         blue = (0, .69, 100)
@@ -120,6 +123,8 @@ class Radar(object):
         camX = math.sin(self.camTheta) * self.camRadius
         camZ = math.cos(self.camTheta) * self.camRadius
         self.radarScene.forward = vector(camX, -10, camZ)
+        planeSurface = (self.radarScene.forward[0]/100, 0, self.radarScene.forward[2]/100)
+        self.plane.axis = planeSurface
 
     def test(self):
         while not self.gameOver:

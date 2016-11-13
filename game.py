@@ -47,6 +47,7 @@ class game(object):
         self.radar = Radar()
         self.gameScene.select()
 
+
         #creating scoreScreen
         self.scoreScreen = scoreScreen()
         self.gameScene.select()
@@ -54,6 +55,11 @@ class game(object):
         #creating scores
         self.missilesHit = 0
         self.hitby = 0
+
+
+        #enemy missile spawn counter
+        self.spawnCounter = 0
+        self.spawnCounterMax = 600
 
     def generateMissile(self, target):
         blastRadius = 0
@@ -99,12 +105,15 @@ class game(object):
                 distVector = missile.missileBody.pos - explosion.location
                 if(distVector.mag <= missile.missileBody.radius+explosion.explosion.radius):
                     print("Missiles Collided!")
+
                     if missile.counter == False:
                         self.scoreScreen.missilesHit += 1
                     result=missile.timerFired(self.deltaT,self.target.radius,collide = True)
+
                     break
             if(result != None):
                 self.explosionList.append(result)
+                print("New explosion! at ",str(result.location))
 
     @staticmethod
     def dist(x1,y1,z1,x2,y2,z2):
@@ -136,10 +145,6 @@ class game(object):
                              blastYield,blastRadius=0,target=mouseInput,
                              counter=True)
     def timerFired(self):
-
-        self.missileList=[self.missileList[i] for i in
-                          range(len(self.missileList))
-                          if not self.missileList[i].destroyed]
         self.checkMissileCollision()
         self.missileList=[self.missileList[i] for i in
                           range(len(self.missileList))
@@ -149,15 +154,14 @@ class game(object):
         for radarMis in self.radar.radarMisList:
             if not radarMis.timerFired(self.deltaT):
                 self.radar.radarMisList.remove(radarMis)
-
-
         self.gameScene.select()
-        mousePos=self.gameScene.mouse.pos
-
-
         #missle operations
         self.gameScene.select()
-        if random.randint(0,1000)<2:
+        self.spawnCounter += 1
+        if(self.spawnCounter > self.spawnCounterMax):
+            self.spawnCounter = 0
+            if(self.spawnCounterMax > 300):
+                self.spawnCounterMax -= 10
             self.missileList.append(self.generateMissile(self.target))
             if self.gameScene.autoscale:
                 self.gameScene.autoscale=False
@@ -191,13 +195,11 @@ class game(object):
         while not self.gameOver:
             #mouse events
             if self.gameScene.mouse.events!=0:
-                print("Click!")
                 event=self.gameScene.mouse.getevent()
                 if (event.release!=None):
                     location=event.pos
                     self.missileList.append(self.generateCounterMissile
                                             (location,self.target))
-
             if self.gameScene.kb.keys!=0:
 
                 key=self.gameScene.kb.getkey()
