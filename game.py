@@ -46,8 +46,9 @@ class game(object):
         self.radar = Radar()
         self.gameScene.select()
 
-
-
+        #enemy missile spawn counter
+        self.spawnCounter = 0
+        self.spawnCounterMax = 600
     def generateMissile(self, target):
         blastRadius = 0
 
@@ -141,7 +142,11 @@ class game(object):
         self.gameScene.select()
         #missle operations
         self.gameScene.select()
-        if random.randint(0,1000)<2:
+        self.spawnCounter += 1
+        if(self.spawnCounter > self.spawnCounterMax):
+            self.spawnCounter = 0
+            if(self.spawnCounterMax > 300):
+                self.spawnCounterMax -= 10
             self.missileList.append(self.generateMissile(self.target))
             if self.gameScene.autoscale:
                 self.gameScene.autoscale=False
