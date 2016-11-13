@@ -79,10 +79,11 @@ class game(object):
                           if not self.missileList[i].destroyed]
     def run(self):
         while not self.gameOver:
-            key=self.gameScene.kb.getkey()
-            if key=='esc':
-                print("Game over")
-                self.gameOver=True
+            if self.gameScene.kb.keys!=0:
+                key=self.gameScene.kb.getkey()
+                if key=='esc':
+                    print("Game over")
+                    self.gameOver=True
             self.timerFired()
             rate(100)
             #self.drawAll()
