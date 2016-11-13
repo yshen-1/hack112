@@ -23,7 +23,6 @@ class missileObject(object):
         self.blastYield=blastYield
         self.velocity=velocity
         self.launchLocation=launchLocation
-        self.location=launchLocation
         self.missileBody=sphere(pos=tuple(launchLocation),
                                 radius=self.radius,color=self.color)
     def spawnMissiles(self):
@@ -32,17 +31,16 @@ class missileObject(object):
         self.destroyed=True
         (locationX,locationY,locationZ) = self.missileBody.pos
         explosionList += (locationX,locationY,locationZ,self.blastRadius)
-        
+
         explosion=sphere(pos=self.missileBody.pos,
                          radius=self.blastRadius,color=color.green)
         del self.missileBody
-
         while self.blastRadius<self.blastYield:
             self.blastRadius+=0.01
             explosion.radius=self.blastRadius
         del explosion
     def timerFired(self,deltaT):
-        self.location=self.location+self.velocity*deltaT
+        self.missileBody.pos+=self.velocity*deltaT
 
 class game(object):
     def __init__(self):
