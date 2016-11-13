@@ -4,7 +4,6 @@ from Target import Target
 from missileObject import missileObject
 import math,random
 
-
 class game(object):
     def __init__(self):
         self.deltaT=0.05
@@ -68,7 +67,27 @@ class game(object):
         blastYield=0.3
         return missileObject(missileSpawnLocation, missileVelocity,
                              blastYield,blastRadius=0)
-
+    def dist(x1,y1,z1,x2,y2,z2):
+        return math.sqrt((x1-x2)**2+(y1-y2)**2+(z1-z2)**2)
+    def generateCounterMissile(mouseInput, target):
+        missileSpeed = 0.5
+        #Get location of the launch sites
+        launchSiteList = target.findTargetLaunchPoints()
+        #See which launch site is closest to mouse input
+        shortestDist = None
+        closestLaunchSite = None
+        for launchSite in launchSiteList:
+            dist = dist(mouseInput.x,mouseInput.y,mouseInput.z,launchSite.x,launchSite.y,launchSite.z)
+            if(shortestDist == None or dist < shortestDist):
+                shortestDist = dist
+                closestLaunchSite = launchSite
+        #Get Missile Velocity
+        counterMissileVelocity = norm(mouseInput - launchSite) #Subtract the vectors
+        counterMissileVelocity.mag = missileSpeed
+        blastYield=0.3
+        return missileObject(closestLaunchSite, missileVelocity,
+                             blastYield,blastRadius=0)
+        pass
     def timerFired(self):
         if random.randint(0,100)<1:
             self.missileList.append(self.generateMissile())
