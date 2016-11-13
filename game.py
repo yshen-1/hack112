@@ -1,12 +1,14 @@
 from __future__ import print_function,division
 from visual import *
 from Target import Target
+from Radar import Radar
 from missileObject import missileObject
 import math,random
 
 
 class game(object):
     def __init__(self):
+        #generates window
         self.deltaT=0.05
         self.width=800
         self.height=800
@@ -19,18 +21,29 @@ class game(object):
                                background=self.background)
 
         self.gameScene.select()
+
+        #creating earth
         self.target = Target(0,0,0,1)
-        
+
+        #camera operations
         self.gameScene.userzoom = False
         self.gameScene.userspin = False
         self.gameScene.range = ((5,5,5))
         self.camTheta = math.pi
         self.camRadius = 10
+
+        #game variables
         self.missileList = []
         self.explosionList=[]
         self.gameOver=False
         self.dx = .1
         self.dy = -.1
+
+        #creating radar
+        self.radar = Radar()
+
+        self.gameScene.select()
+
 
     def generateMissile(blastRadius=0):
         #To Do, make generate missiles send missiles to the launch points
@@ -101,8 +114,12 @@ class game(object):
                     self.gameOver=True
                 elif key == "right":
                     self.camTheta += .2
+                    self.radar.updateCam(.2)
+                    self.gameScene.select()
                 elif key == "left":
                     self.camTheta -= .2
+                    self.radar.updateCam(-.2)
+                    self.gameScene.select()
 
             camX = math.sin(self.camTheta) * self.camRadius
             camZ = math.cos(self.camTheta) * self.camRadius
