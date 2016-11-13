@@ -24,7 +24,8 @@ class missileObject(object):
         self.destroyed=False
         self.radius=0.05
         self.targetThreshold=0.05
-        self.color=color.white if not counter else color.green
+        self.despawnLength = 10
+        self.color=color.red if not counter else color.green
         self.blastRadius=blastRadius
         self.blastYield=blastYield
         self.velocity=velocity
@@ -42,6 +43,7 @@ class missileObject(object):
     def timerFired(self,deltaT,targetRadius):
         self.missileBody.pos+=self.velocity*deltaT
         if ((mag(vector(self.missileBody.pos))<targetRadius) or
+            (mag(vector(self.missileBody.pos))>self.despawnLength) or
             (self.target!=None and
             (missileObject.distance(self.missileBody.pos,vector(self.target))
                                     <self.targetThreshold))):
