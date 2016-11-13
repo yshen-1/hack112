@@ -176,11 +176,11 @@ class game(object):
                 if key=='esc':
                     print("Game over")
                     self.gameOver=True
-                elif key == "right":
+                elif key == "right" or key == "a":
                     self.camTheta -= .2
                     self.radar.updateCam(-.2)
                     self.gameScene.select()
-                elif key == "left":
+                elif key == "left" or key == "d":
                     self.camTheta += .2
                     self.radar.updateCam(.2)
                     self.gameScene.select()
