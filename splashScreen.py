@@ -63,4 +63,4 @@ class splashScreen(object):
             self.timerFired()
 
             rate(100)
-        exit()
+        
