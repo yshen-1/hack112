@@ -11,7 +11,7 @@ class Radar(object):
 
         self.radarScene=display(title="Radar",width=self.width,
                                height=self.height,center=self.sceneCenter,
-                               background=self.background)
+                               background=self.background,x=800,y=450)
 
         self.radarScene.select()
         self.radarScene.lights = (distant_light(direction = ( 0, 1,  0), color = color.gray(.4)),
