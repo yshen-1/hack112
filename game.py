@@ -20,7 +20,7 @@ class game(object):
         self.gameScene.userzoom = False
         self.gameScene.userspin = False
 
-        self.camTheta = math.pi
+        self.camTheta = 0
         self.camRadius = 10
         self.missileList = []
         self.explosionList=[]
@@ -96,9 +96,9 @@ class game(object):
                     print("Game over")
                     self.gameOver=True
                 elif key == "right":
-                    self.camTheta += .1
+                    self.camTheta += .2
                 elif key == "left":
-                    self.camTheta -= .1
+                    self.camTheta -= .2
 
             camX = math.sin(self.camTheta) * self.camRadius
             camZ = math.cos(self.camTheta) * self.camRadius
@@ -107,6 +107,5 @@ class game(object):
 
             rate(100)
         exit()
-
 missileCommand=game()
 missileCommand.run()
