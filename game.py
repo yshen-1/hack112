@@ -84,12 +84,10 @@ class game(object):
     def run(self):
         while not self.gameOver:
             if self.gameScene.mouse.events!=0:
-                event=self.gameScene.mouse.getevent()
-                #print(help(event))
-                if event=='mousedown':
-                    print("Mouse down!")
-                    position=self.gameScene.mouse.pos
-                    print(position)
+                event=self.gameScene.mouse.getclick()
+                location=event.pos
+                self.missileList.append(self.generateMissile(location))
+
             if self.gameScene.kb.keys!=0:
                 key=self.gameScene.kb.getkey()
                 if key=='esc':
