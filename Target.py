@@ -8,6 +8,19 @@ class Target(object):
         self.position = vector(x, y, z)
         self.radius = radius
         self.launchPoints = self.findTargetLaunchPoints()
+        self.colors = dict()
+        green = (.114, .914, .714)
+        blue = (0, .69, 100)
+        yellow = (1, 1, 0)
+        orange = (1, .439, .263)
+        self.colors[self.launchPoints[0]] = orange
+        self.colors[self.launchPoints[1]] = orange
+        self.colors[self.launchPoints[2]] = blue
+        self.colors[self.launchPoints[3]] = blue
+        self.colors[self.launchPoints[4]] = yellow
+        self.colors[self.launchPoints[5]] = yellow
+        self.colors[self.launchPoints[6]] = green
+        self.colors[self.launchPoints[7]] = green
         #draws earth
         self.draw()
 
@@ -21,6 +34,9 @@ class Target(object):
                 z = math.sin(phi)*math.cos(theta)*self.radius
                 points += [vector(x, y, z)]
         return points
+
+    def launchPointColor(point):
+        return self.colors[point]
   
     def checkCollision(missile):
         #checks if missle collides with earth
@@ -33,15 +49,15 @@ class Target(object):
         #draws target or earth
         sphere(pos=tuple(self.position), radius=self.radius,
                material=materials.earth)
-        green = (.114, .914, .714)
-        blue = (0, .69, 100)
-        yellow = (1, 1, 0)
-        orange = (1, .439, .263)
-        colors = [orange, blue, yellow, green]
+        # green = (.114, .914, .714)
+        # blue = (0, .69, 100)
+        # yellow = (1, 1, 0)
+        # orange = (1, .439, .263)
+        # colors = [orange, blue, yellow, green]
         #puts the launch points silos
         for p in range(len(self.launchPoints)):
             point = self.launchPoints[p]
-            c = colors[p//2]
+            c = self.colors[point]
             print(c, point)
             cone(pos = tuple(point), radius = self.radius/10, 
                  axis = tuple(point/10), color = c)

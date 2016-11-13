@@ -33,7 +33,7 @@ class game(object):
         self.gameScene.range = ((5,5,5))
 
         self.camTheta = math.pi
-
+        self.camY = 0
         self.camRadius = 10
 
         #game variables
@@ -153,10 +153,16 @@ class game(object):
                     self.camTheta += .2
                     self.radar.updateCam(.2)
                     self.gameScene.select()
+                elif key == "up":
+                    if(self.camY > -2):
+                        self.camY -= 1
+                elif key == "down":
+                    if(self.camY < 2):
+                        self.camY += 1
 
             camX = math.sin(self.camTheta) * self.camRadius
             camZ = math.cos(self.camTheta) * self.camRadius
-            self.gameScene.forward = vector(camX, 0, camZ)
+            self.gameScene.forward = vector(camX, self.camY, camZ)
             self.timerFired()
 
             rate(100)
