@@ -55,7 +55,7 @@ class Radar(object):
 
         self.radarScene=display(title="Radar",width=self.width,
                                height=self.height,center=self.sceneCenter,
-                               background=self.background,x=800,y=450,
+                               background=self.background,x=800,y=400,
                                autoscale = False, 
                                userZoom = False,
                                userSpin = False,
