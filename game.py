@@ -21,6 +21,7 @@ class game(object):
 
         #creating earth
         self.target = Target(0,0,0,1)
+
         #camera operations
 
         self.gameScene.userzoom = False
@@ -28,6 +29,7 @@ class game(object):
         self.gameScene.range = ((5,5,5))
 
         self.camTheta = math.pi
+
         self.camRadius = 10
 
         #game variables
