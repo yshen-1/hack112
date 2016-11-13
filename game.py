@@ -1,7 +1,11 @@
 from __future__ import print_function,division
 from visual import *
 class missileObject(object):
-    def __init__(self):
+    def __init__(self,launchLocation,velocity,blastRadius):
+        self.blastRadius=blastRadius
+        self.velocity=velocity
+        (self.launchX,self.launchY,self.launchZ)=launchLocation
+    def spawnMissiles(self):
         pass
     def explode(self):
         pass
