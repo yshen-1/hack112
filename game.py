@@ -19,12 +19,14 @@ class game(object):
         self.target = Target(0,0,0,1)
         self.gameScene.userzoom = False
         self.gameScene.userspin = False
-        self.camX = 0
-        self.camY = 0
-        self.camZ = -1
+
+        self.camTheta = 0
+        self.camRadius = 10
         self.missileList = []
         self.explosionList=[]
         self.gameOver=False
+        self.dx = .1
+        self.dy = -.1
 
     def generateMissile(blastRadius=0):
         #Generate a random spawn location and velocity
@@ -86,9 +88,14 @@ class game(object):
                 if key=='esc':
                     print("Game over")
                     self.gameOver=True
-                if key == "right":
-                    self.camX += .1
-            self.gameScene.forward = vector(self.camX, self.camY, self.camZ)
+                elif key == "right":
+                    self.camTheta += .2
+                elif key == "left":
+                    self.camTheta -= .2
+
+            camX = math.sin(self.camTheta) * self.camRadius
+            camZ = math.cos(self.camTheta) * self.camRadius
+            self.gameScene.forward = vector(camX, 0, camZ)
             self.timerFired()
 
             rate(100)
