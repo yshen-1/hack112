@@ -112,12 +112,12 @@ class game(object):
                     print("Game over")
                     self.gameOver=True
                 elif key == "right":
-                    self.camTheta += .2
-                    self.radar.updateCam(.2)
-                    self.gameScene.select()
-                elif key == "left":
                     self.camTheta -= .2
                     self.radar.updateCam(-.2)
+                    self.gameScene.select()
+                elif key == "left":
+                    self.camTheta += .2
+                    self.radar.updateCam(.2)
                     self.gameScene.select()
 
             camX = math.sin(self.camTheta) * self.camRadius
