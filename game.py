@@ -44,7 +44,7 @@ class game(object):
         #creating radar
         self.radar = Radar()
         self.gameScene.select()
-        self.ui=ui(self.target.radius)
+        #self.ui=ui(self.target.radius)
 
 
     def generateMissile(self, target):
@@ -142,7 +142,7 @@ class game(object):
 
         self.gameScene.select()
         mousePos=self.gameScene.mouse.pos
-        self.ui.timerFired(mousePos.x)
+        #self.ui.timerFired(mousePos.x)
 
         #missle operations
         self.gameScene.select()
