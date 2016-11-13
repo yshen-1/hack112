@@ -4,17 +4,6 @@ from Target import Target
 from missileObject import missileObject
 import math,random
 
-'''
-explosionList = []
-def dist(x1,y1,x2,y2,z1,z2):
-    return sqrt((x1-x2)**2 + (y1-y2)**2+(z1-z2))
-def checkCollision(missileX,missileY,missileZ):
-    for explosion in explosionList:
-        (explosionX,explosionY,explosionZ explosionRadius) = explosion
-        if(dist(missileX,missileY,explosionX,explosionY) < explosionRadius):
-            return True
-    return False
-'''
 
 class game(object):
     def __init__(self):
