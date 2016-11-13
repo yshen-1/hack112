@@ -10,10 +10,9 @@ def generateMissile():
     z = random.uniform(-1.0, 1.0)
     theta = random.uniform(0.0, 2*math.pi)
     #convert to cartesian
-    x = r*math.cos(theta)
-    y = r*math.sin(theta)
+    x = math.sqrt(1-z**2)*math.cos(theta)
+    y = math.sqrt(1-z**2)*math.sin(theta)
     z = z
-
     missileStartPos = vector(x,y,z)
     return (x,y,z)
     pass
