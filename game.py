@@ -92,6 +92,7 @@ class game(object):
                 distVector = missile.missileBody.pos - explosion.location
                 if(distVector.mag <= missile.missileBody.radius+explosion.explosion.radius):
                     print("Missiles Collided!")
+
                     result=missile.timerFired(self.deltaT,self.target.radius,collide = True)
                     break
             if(result != None):
@@ -213,5 +214,5 @@ class game(object):
         exit()
 
 
-missileCommand=game()
-missileCommand.run()
+# missileCommand=game()
+# missileCommand.run()

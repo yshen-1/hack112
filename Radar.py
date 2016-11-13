@@ -44,6 +44,7 @@ class radarMis(object):
         return True
 
 
+
 class Radar(object):
     def __init__(self):
         #generates a new window for radar
