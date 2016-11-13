@@ -2,6 +2,7 @@ from __future__ import print_function,division
 from visual import *
 from Target import Target
 from Radar import Radar
+from Radar import radarMis
 from missileObject import missileObject
 from ui import  ui
 import math,random,time
@@ -48,12 +49,14 @@ class game(object):
         self.gameScene.select()
         self.ui=ui(self.target.radius)
 
+
     def generateMissile(self, target):
         blastRadius = 0
+
         #To Do, make generate missiles send missiles to the launch points
         #Generate a random spawn location and velocity
         missileSpawnLength = 6
-        missileSpeed = 0.5
+        missileSpeed = 0.1
         # make random unit vector in cylindrical coordinate.
         r = 1
         z = random.uniform(-1.0, 1.0)
@@ -78,14 +81,26 @@ class game(object):
         missileVelocity.mag = missileSpeed
 
         blastYield=0.3
+
+        radarMissile = radarMis(self.radar, missileSpawnLocation, missileVelocity)
+        self.radar.radarMisList.append(radarMissile)
+        self.gameScene.select()
         return missileObject(missileSpawnLocation, missileVelocity,
                              blastYield,blastRadius=0)
+    def checkMissileCollision(self):
+        for missile in self.missileList:
+            for explosion in self.explosionList:
+                distVector = missile.missileBody.pos - explosion.location 
+                if(distVector.mag <= missile.missileBody.radius+explosion.blastRadius):
+                    print("Missiles Collided")
+                    missile.timerFired(self.deltaT,self.target.radius,collide = True)
 
     @staticmethod
     def dist(x1,y1,z1,x2,y2,z2):
         return math.sqrt((x1-x2)**2+(y1-y2)**2+(z1-z2)**2)
 
     def generateCounterMissile(self,mouseInput, target):
+        self.gameScene.select()
         missileSpeed = 1
         #Get location of the launch sites
         time0=time.time()
@@ -109,12 +124,22 @@ class game(object):
         return missileObject(closestLaunchSite, counterMissileVelocity,
                              blastYield,blastRadius=0,target=mouseInput,
                              counter=True)
-
     def timerFired(self):
+
+        #radar missle operatoins
+        self.radar.radarScene.select()
+        for radarMis in self.radar.radarMisList:
+            if not radarMis.timerFired(self.deltaT):
+                self.radar.radarMisList.remove(radarMis)
+
+
+        self.gameScene.select()
         mousePos=self.gameScene.mouse.pos
         self.ui.timerFired(mousePos.x)
+
         #missle operations
-        if random.randint(0,100)<1:
+        self.gameScene.select()
+        if random.randint(0,1000)<2:
             self.missileList.append(self.generateMissile(self.target))
             if self.gameScene.autoscale:
                 self.gameScene.autoscale=False
@@ -135,6 +160,9 @@ class game(object):
         camZ = math.cos(self.camTheta) * self.camRadius
         self.gameScene.forward = vector(camX, self.camY, camZ)
 
+
+        #updates radar missles
+        self.radar.updateMis(self.target, self.missileList)
 
     def run(self):
         self.gameScene.select()
