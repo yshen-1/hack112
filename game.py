@@ -58,7 +58,7 @@ class game(object):
         yPos *= missileSpawnLength
         zPos *= missileSpawnLength
         missileSpawnLocation = vector(xPos, yPos, zPos)
-        blastYield=0.2
+        blastYield=0.3
         return missileObject(missileSpawnLocation, missileVelocity,
                              blastYield,blastRadius=0)
 
